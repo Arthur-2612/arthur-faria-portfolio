@@ -439,3 +439,48 @@ function initHeroNeuralCanvas() {
 }
 initHeroNeuralCanvas();
 
+/* Dynamic Typist for Hero Specialties */
+function initHeroTypewriter() {
+  const target = document.getElementById('hero-rotating-text');
+  if (!target) return;
+  const words = [
+    'Sistemas Multiagentes',
+    'Arquiteturas RAG & pgvector',
+    'IA Aplicada & Engenharia de Dados',
+    'Visão Computacional & YOLO',
+    'Integração de Modelos a Sistemas'
+  ];
+  let wordIndex = 0;
+  let charIndex = words[0].length;
+  let isDeleting = true;
+  const pauseEnd = 2400;
+
+  function type() {
+    const currentWord = words[wordIndex];
+    if (isDeleting) {
+      charIndex--;
+      target.textContent = currentWord.substring(0, charIndex);
+      if (charIndex === 0) {
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        setTimeout(type, 350);
+        return;
+      }
+      setTimeout(type, 35);
+    } else {
+      charIndex++;
+      target.textContent = currentWord.substring(0, charIndex);
+      if (charIndex === currentWord.length) {
+        isDeleting = true;
+        setTimeout(type, pauseEnd);
+        return;
+      }
+      setTimeout(type, 65);
+    }
+  }
+
+  setTimeout(type, pauseEnd);
+}
+initHeroTypewriter();
+
+
