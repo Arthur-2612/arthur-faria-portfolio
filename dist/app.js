@@ -210,18 +210,131 @@ function renderFlow(project, key) {
   const target = $('#case-architecture'); target.replaceChildren(flow);
   const note = document.createElement('p');note.className = 'case-note';note.textContent = project.architectureNote;target.append(note);
   if (key === 'agents') {
-    const explorer = document.createElement('div'); explorer.className = 'agent-explorer';
-    explorer.innerHTML = '<h3>Explore os quatro especialistas</h3><div class="agent-buttons" role="group" aria-label="Selecionar agente especialista"></div><p id="agent-description" role="status" aria-live="polite"></p>';
-    const names = {bureau:'Bureau',payments:'Pagamentos',card:'Cartão',contracts:'Contratos'};
-    Object.entries(names).forEach(([id, name], i) => {
-      const button = document.createElement('button');button.textContent = name;button.setAttribute('aria-pressed', String(i === 0));
-      button.addEventListener('click', () => {
-        explorer.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
-        explorer.querySelector('#agent-description').textContent = specialists[id];
+    const explorer = document.createElement('div');
+    explorer.className = 'agent-explorer';
+    explorer.innerHTML = `
+      <div class="agent-sim-head">
+        <span class="architecture-label">PLAYGROUND INTERATIVO · GOOGLE ADK</span>
+        <h3>Simulador de Orquestração Multiagente</h3>
+      </div>
+      <p class="agent-sim-intro">Selecione um cenário para ver a delegação semântica do <strong>Concierge</strong> para os 4 especialistas e o contrato JSON emitido via Pydantic:</p>
+      <div class="agent-scenarios" role="group" aria-label="Selecione um cliente para simulação">
+        <button class="agent-scenario-btn active" data-scenario="low_risk">Cenário A · Baixo Risco (Score 840)</button>
+        <button class="agent-scenario-btn" data-scenario="mid_risk">Cenário B · Sem Histórico Cartão</button>
+        <button class="agent-scenario-btn" data-scenario="high_risk">Cenário C · Alerta de Inadimplência</button>
+      </div>
+
+      <div class="agent-graph-box">
+        <div class="agent-node-concierge">
+          <span class="agent-node-badge">ORQUESTRADOR ADK</span>
+          <strong>Concierge Agent</strong>
+          <small id="sim-concierge-status">Coletando variáveis e delegando contexto...</small>
+        </div>
+        <div class="agent-wires">
+          <div class="agent-wire"></div>
+          <div class="agent-wire"></div>
+          <div class="agent-wire"></div>
+          <div class="agent-wire"></div>
+        </div>
+        <div class="agent-specialists-grid">
+          <div class="agent-spec-card">
+            <span class="spec-name">01 · Bureau</span>
+            <div class="spec-value" id="val-bureau"></div>
+          </div>
+          <div class="agent-spec-card">
+            <span class="spec-name">02 · Pagamentos</span>
+            <div class="spec-value" id="val-payments"></div>
+          </div>
+          <div class="agent-spec-card">
+            <span class="spec-name">03 · Cartão</span>
+            <div class="spec-value" id="val-card"></div>
+          </div>
+          <div class="agent-spec-card">
+            <span class="spec-name">04 · Contratos</span>
+            <div class="spec-value" id="val-contracts"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-pydantic-output">
+        <div class="pydantic-header">
+          <span>CONTRATO DE SAÍDA VALIDADO (PYDANTIC / JSON)</span>
+          <span class="pydantic-status">SCHEMA OK · STATUS 200</span>
+        </div>
+        <pre class="pydantic-code" id="sim-pydantic-code"><code></code></pre>
+      </div>
+    `;
+
+    const scenarios = {
+      low_risk: {
+        status: 'Concierge: Contexto consolidado · Score de crédito elevado.',
+        bureau: 'Dívida ativa: R$ 0<br>Atrasos externos: 0<br>Score: 840 (Excelente)',
+        payments: '36 parcelas pagas<br>Pontualidade: 100%<br>Variação média: R$ 0',
+        card: 'Limite utilizado: 18%<br>Pagamento integral de fatura<br>Tendência: Estável',
+        contracts: '2 contratos quitados<br>Zero recusas históricas<br>Perfil elegível',
+        json: {
+          client_id: 10842,
+          risk_tier: "LOW_RISK",
+          recommendation: "APROVAR_CREDITO",
+          suggested_credit_limit: 45000.00,
+          interest_rate_modifier: -0.015,
+          active_specialists_consulted: ["bureau", "payments", "card", "contracts"],
+          pydantic_contract_version: "2.1.0"
+        }
+      },
+      mid_risk: {
+        status: 'Concierge: Cartão ausente · Acionando regra de contingência explícita.',
+        bureau: 'Crédito externo: R$ 3.800<br>1 apontamento regularizado<br>Score: 650 (Médio)',
+        payments: '14 parcelas analisadas<br>2 atrasos curtos (< 5 dias)<br>Pontualidade: 86%',
+        card: 'Sem histórico de cartão<br>Tratamento de nulos em Pandas<br>Flag: NO_CARD_DATA',
+        contracts: '1 contrato anterior em dia<br>Proposta aprovada sob limite',
+        json: {
+          client_id: 25910,
+          risk_tier: "MODERATE_RISK",
+          recommendation: "APROVAR_COM_CONDICIONANTES",
+          suggested_credit_limit: 12000.00,
+          notes: "Ausência de dados de cartão tratada explicitamente na agregação.",
+          active_specialists_consulted: ["bureau", "payments", "contracts"],
+          pydantic_contract_version: "2.1.0"
+        }
+      },
+      high_risk: {
+        status: 'Concierge: Múltiplas anomalias detectadas · Limite restrito recomendado.',
+        bureau: 'Dívida ativa: R$ 14.500<br>3 atrasos consecutivos<br>Score: 390 (Crítico)',
+        payments: 'Taxa de atraso: 34%<br>Parcelas em aberto: 3<br>Risco de inadimplência alto',
+        card: 'Utilização de limite: 97%<br>Pagamento de mínimo recorrente<br>Alerta de rotativo',
+        contracts: '1 recusa em 6 meses<br>Tentativa de refinanciamento',
+        json: {
+          client_id: 39201,
+          risk_tier: "HIGH_RISK",
+          recommendation: "ENCAMINHAR_ANALISE_HUMANA",
+          suggested_credit_limit: 0.00,
+          risk_flags: ["HIGH_REVOLVING_CREDIT", "CONSECUTIVE_DELINQUENCIES"],
+          active_specialists_consulted: ["bureau", "payments", "card", "contracts"],
+          pydantic_contract_version: "2.1.0"
+        }
+      }
+    };
+
+    function updateScenario(scenarioKey) {
+      const data = scenarios[scenarioKey];
+      if (!data) return;
+      explorer.querySelector('#sim-concierge-status').textContent = data.status;
+      explorer.querySelector('#val-bureau').innerHTML = data.bureau;
+      explorer.querySelector('#val-payments').innerHTML = data.payments;
+      explorer.querySelector('#val-card').innerHTML = data.card;
+      explorer.querySelector('#val-contracts').innerHTML = data.contracts;
+      explorer.querySelector('#sim-pydantic-code code').textContent = JSON.stringify(data.json, null, 2);
+    }
+
+    explorer.querySelectorAll('.agent-scenario-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        explorer.querySelectorAll('.agent-scenario-btn').forEach(b => b.classList.toggle('active', b === btn));
+        updateScenario(btn.dataset.scenario);
       });
-      explorer.querySelector('.agent-buttons').append(button);
     });
-    explorer.querySelector('#agent-description').textContent = specialists.bureau;
+
+    updateScenario('low_risk');
     target.append(explorer);
   }
 }
