@@ -471,7 +471,7 @@ function initProject3DTilt() {
 
       const pctX = Math.max(0, Math.min(100, (x / rect.width) * 100));
       const pctY = Math.max(0, Math.min(100, (y / rect.height) * 100));
-      glow.style.background = `radial-gradient(circle at ${pctX.toFixed(1)}% ${pctY.toFixed(1)}%, rgba(131, 181, 255, 0.28) 0%, transparent 60%)`;
+      glow.style.background = `radial-gradient(circle at ${pctX.toFixed(1)}% ${pctY.toFixed(1)}%, rgba(245, 158, 11, 0.22) 0%, transparent 60%)`;
     });
 
     card.addEventListener('mouseleave', () => {
@@ -481,14 +481,116 @@ function initProject3DTilt() {
 }
 initProject3DTilt();
 
+/* Engineering Terminal (CLI) Implementation */
+function initEngineeringTerminal() {
+  const form = document.getElementById('terminal-form');
+  const input = document.getElementById('terminal-input');
+  const output = document.getElementById('terminal-output');
+  const actionBtns = document.querySelectorAll('.terminal-btn');
 
+  if (!output) return;
+
+  const commands = {
+    help: () => `
+Comandos suportados:<br>
+• <strong style="color:#fbbf24">skills</strong>: Detalhamento técnico da stack e proficiências<br>
+• <strong style="color:#fbbf24">architecture</strong>: Filosofia de desenvolvimento de sistemas e agentes<br>
+• <strong style="color:#fbbf24">metrics</strong>: Indicadores de engenharia e produção<br>
+• <strong style="color:#fbbf24">whoami</strong>: Perfil e foco profissional de Arthur Faria<br>
+• <strong style="color:#fbbf24">contact</strong>: Links diretos e canais de contato<br>
+• <strong style="color:#fbbf24">clear</strong>: Limpa a janela do terminal
+    `,
+    skills: () => `
+<strong style="color:#fbbf24">CORE STACK &amp; FERRAMENTAS:</strong><br>
+[IA &amp; Agentes]     Python, LangChain, Google ADK, LangGraph, Prompt Engineering<br>
+[Bancos &amp; Vetores] PostgreSQL, pgvector, BigQuery, Redis, SQLite<br>
+[APIs &amp; Backend]   FastAPI, RESTful APIs, Spring Boot (Java), Pydantic<br>
+[Eng. de Dados]   Pandas, PySpark, Data Pipelines, Extração/OCR<br>
+[DevOps &amp; Cloud]  Docker, Git, Google Cloud Platform (GCP), Linux
+    `,
+    architecture: () => `
+<strong style="color:#fbbf24">FILOSOFIA DE ARQUITETURA DE IA &amp; SOFTWARE:</strong><br>
+1. <strong>Determinismo com Pydantic:</strong> LLMs geram saídas tipadas e validadas por esquemas estritos, sem alucinações de formato.<br>
+2. <strong>Máquinas de Estados Explícitas:</strong> Orquestração multiagente delegada com escopos claros (Concierge + Especialistas).<br>
+3. <strong>Human-in-the-Loop Obrigatório:</strong> Nenhuma automação crítica toma decisões jurídicas ou de crédito finais sem validação humana.<br>
+4. <strong>RAG Híbrido &amp; Recuperação Densa:</strong> Busca vetorial com pgvector combinada com filtros relacionais para máxima precisão.
+    `,
+    metrics: () => `
+<strong style="color:#fbbf24">BENCHMARKS &amp; MÉTRICAS EM DESTAQUE:</strong><br>
+• <strong>Projetos Multiagente:</strong> 4 agentes especialistas simultâneos em produção piloto<br>
+• <strong>Precisão de Extração:</strong> Validação estruturada via contratos Pydantic (100% de conformidade de schema)<br>
+• <strong>Pipeline de Documentos:</strong> Geração automatizada de minutas preliminares DOCX integradas ao Projuris<br>
+• <strong>Inspeção por Visão Computacional:</strong> Detecção em tempo real de garrafas PET com YOLO
+    `,
+    whoami: () => `
+<strong style="color:#fbbf24">Arthur Faria e Silva</strong><br>
+Estudante de Análise e Desenvolvimento de Sistemas no SENAI Gaspar Ricardo Jr.<br>
+Estagiário em Engenharia de Dados &amp; IA na 2RP Net.<br>
+Foco: Conectar dados corporativos, modelos de linguagem e engenharia de software robusta.
+    `,
+    contact: () => `
+<strong style="color:#fbbf24">CANAL DE CONTATO:</strong><br>
+• LinkedIn: <a href="https://www.linkedin.com/in/arthur-faria-e-silva-85b04a290/" target="_blank" rel="noopener noreferrer" style="color:#f59e0b;text-decoration:underline">linkedin.com/in/arthur-faria-e-silva-85b04a290/</a><br>
+• GitHub:   <a href="https://github.com/Arthur-2612" target="_blank" rel="noopener noreferrer" style="color:#f59e0b;text-decoration:underline">github.com/Arthur-2612</a><br>
+• Foco:     Estágio &amp; Oportunidades em IA Aplicada / Engenharia de Software
+    `,
+    clear: () => null
+  };
+
+  function executeCommand(rawCmd) {
+    const cmd = rawCmd.trim().toLowerCase();
+    if (!cmd) return;
+
+    if (cmd === 'clear') {
+      output.innerHTML = '';
+      return;
+    }
+
+    const line = document.createElement('div');
+    line.className = 'terminal-line';
+    line.innerHTML = `<span class="terminal-prompt">arthur@portfolio:~$</span> <span class="terminal-cmd">${escapeHtml(cmd)}</span>`;
+    output.appendChild(line);
+
+    const outBox = document.createElement('div');
+    outBox.className = 'terminal-output';
+
+    if (commands[cmd]) {
+      outBox.innerHTML = commands[cmd]();
+    } else {
+      outBox.innerHTML = `Comando não reconhecido: "<strong>${escapeHtml(cmd)}</strong>". Digite <span style="color:#f59e0b">help</span> para listar os comandos.`;
+    }
+
+    output.appendChild(outBox);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  if (form && input) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      executeCommand(input.value);
+      input.value = '';
+    });
+  }
+
+  actionBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cmd = btn.getAttribute('data-cmd');
+      if (cmd) executeCommand(cmd);
+    });
+  });
+}
+initEngineeringTerminal();
 
 /* Smooth Scroll Reveal Animations */
 function initScrollReveal() {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) return;
 
-  const targets = document.querySelectorAll('.section-head, .project-card, .stack-tabs, .stack-panel, .career-layout, .legal-feature, .contact-layout');
+  const targets = document.querySelectorAll('.section-head, .project-card, .stack-tabs, .stack-panel, .career-layout, .legal-feature, .contact-layout, .engineering-terminal');
   targets.forEach(el => el.classList.add('reveal-on-scroll'));
 
   const observer = new IntersectionObserver((entries, obs) => {
@@ -506,7 +608,7 @@ initScrollReveal();
 
 /* Active Navigation Scrollspy */
 function initScrollSpy() {
-  const sections = document.querySelectorAll('section[id]');
+  const sections = document.querySelectorAll('section[id], div[id="terminal-section"]');
   const navLinks = document.querySelectorAll('#navigation a[href^="#"]');
   if (!sections.length || !navLinks.length) return;
 
