@@ -265,3 +265,177 @@ $('#copy-profile').addEventListener('click', async () => {
   } catch {status.textContent = `Copie este link: ${url}`;}
 });
 $('#year').textContent = String(new Date().getFullYear());
+
+/* Interactive Neural Network & Vector Node Canvas */
+function initHeroNeuralCanvas() {
+  const canvas = document.getElementById('hero-neural-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const hero = document.getElementById('inicio');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let particles = [];
+  let animId = null;
+  let isVisible = true;
+  const mouse = { x: null, y: null, maxDist: 150 };
+
+  function resize() {
+    const rect = hero.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(dpr, dpr);
+    initParticles();
+  }
+
+  function initParticles() {
+    const count = width < 768 ? 28 : 55;
+    particles = [];
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.55,
+        vy: (Math.random() - 0.5) * 0.55,
+        r: Math.random() * 1.8 + 1.2,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.02 + Math.random() * 0.02,
+        color: i % 4 === 0 ? '#83b5ff' : i % 4 === 1 ? '#5495ff' : i % 4 === 2 ? '#3b74e6' : '#a6ccff'
+      });
+    }
+  }
+
+  function update() {
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.pulse += p.pulseSpeed;
+
+      if (p.x < 0) { p.x = 0; p.vx *= -1; }
+      else if (p.x > width) { p.x = width; p.vx *= -1; }
+      if (p.y < 0) { p.y = 0; p.vy *= -1; }
+      else if (p.y > height) { p.y = height; p.vy *= -1; }
+
+      // Mouse gentle interaction
+      if (mouse.x !== null && mouse.y !== null) {
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < mouse.maxDist) {
+          const force = (1 - dist / mouse.maxDist) * 0.03;
+          p.x += dx * force;
+          p.y += dy * force;
+        }
+      }
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw connecting edges
+    const maxEdgeDist = width < 768 ? 95 : 125;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const p1 = particles[i];
+        const p2 = particles[j];
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < maxEdgeDist) {
+          const alpha = (1 - dist / maxEdgeDist) * 0.32;
+          ctx.strokeStyle = `rgba(84, 149, 255, ${alpha.toFixed(3)})`;
+          ctx.lineWidth = 0.9;
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+        }
+      }
+
+      // Draw mouse connection
+      if (mouse.x !== null && mouse.y !== null) {
+        const p = particles[i];
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < mouse.maxDist) {
+          const alpha = (1 - dist / mouse.maxDist) * 0.45;
+          ctx.strokeStyle = `rgba(131, 181, 255, ${alpha.toFixed(3)})`;
+          ctx.lineWidth = 1.1;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw nodes
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      const currentRadius = p.r + Math.sin(p.pulse) * 0.5;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(0.8, currentRadius), 0, Math.PI * 2);
+      ctx.fill();
+
+      // Ambient node glow on key points
+      if (i % 5 === 0) {
+        ctx.fillStyle = 'rgba(84, 149, 255, 0.15)';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, currentRadius * 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  function loop() {
+    if (!isVisible) return;
+    update();
+    draw();
+    animId = requestAnimationFrame(loop);
+  }
+
+  hero.addEventListener('mousemove', event => {
+    const rect = hero.getBoundingClientRect();
+    mouse.x = event.clientX - rect.left;
+    mouse.y = event.clientY - rect.top;
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    mouse.x = null;
+    mouse.y = null;
+  });
+
+  const observer = new IntersectionObserver(([entry]) => {
+    isVisible = entry.isIntersecting;
+    if (isVisible) {
+      if (!animId) loop();
+    } else {
+      cancelAnimationFrame(animId);
+      animId = null;
+    }
+  }, { threshold: 0.05 });
+  observer.observe(hero);
+
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resize, 100);
+  });
+
+  resize();
+  loop();
+}
+initHeroNeuralCanvas();
+
