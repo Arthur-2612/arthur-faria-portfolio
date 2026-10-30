@@ -483,4 +483,47 @@ function initHeroTypewriter() {
 }
 initHeroTypewriter();
 
+/* 3D Tilt and Specular Highlight for Project Cards */
+function initProject3DTilt() {
+  const cards = document.querySelectorAll('.project-card');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced || window.innerWidth < 768) return;
+
+  cards.forEach(card => {
+    const visual = card.querySelector('.project-visual');
+    if (!visual) return;
+
+    let glow = visual.querySelector('.project-visual-glow');
+    if (!glow) {
+      glow = document.createElement('div');
+      glow.className = 'project-visual-glow';
+      visual.appendChild(glow);
+    }
+
+    card.addEventListener('mousemove', e => {
+      const rect = visual.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const normX = (x / rect.width - 0.5) * 2;
+      const normY = (y / rect.height - 0.5) * 2;
+
+      const rotateX = -normY * 7;
+      const rotateY = normX * 7;
+
+      visual.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+
+      const pctX = Math.max(0, Math.min(100, (x / rect.width) * 100));
+      const pctY = Math.max(0, Math.min(100, (y / rect.height) * 100));
+      glow.style.background = `radial-gradient(circle at ${pctX.toFixed(1)}% ${pctY.toFixed(1)}%, rgba(131, 181, 255, 0.28) 0%, transparent 60%)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      visual.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+    });
+  });
+}
+initProject3DTilt();
+
+
 
