@@ -369,14 +369,28 @@ let backdropStart = false;
 dialog.addEventListener('pointerdown', event => {backdropStart = event.target === dialog;});
 dialog.addEventListener('click', event => {if (event.target === dialog && backdropStart) dialog.close();});
 dialog.addEventListener('close', () => {clearDemo();document.body.classList.remove('dialog-open');lastProjectButton?.focus({preventScroll:true});});
-$('#copy-profile').addEventListener('click', async () => {
-  const status = $('#copy-status');
-  const url = 'https://www.linkedin.com/in/arthur-faria-e-silva-85b04a290/';
-  try {
-    if (!navigator.clipboard) throw new Error('Clipboard unavailable');
-    await navigator.clipboard.writeText(url);status.textContent = 'Link copiado!';
-  } catch {status.textContent = `Copie este link: ${url}`;}
-});
+const copyBtn = $('#copy-profile');
+if (copyBtn) {
+  copyBtn.addEventListener('click', async () => {
+    const status = $('#copy-status');
+    const url = 'https://www.linkedin.com/in/arthur-faria-e-silva-85b04a290/';
+    const originalText = 'Copiar link do LinkedIn';
+    try {
+      if (!navigator.clipboard) throw new Error('Clipboard unavailable');
+      await navigator.clipboard.writeText(url);
+      copyBtn.classList.add('copied');
+      copyBtn.textContent = '✓ Link do LinkedIn copiado!';
+      status.textContent = 'Copiado para a área de transferência!';
+      setTimeout(() => {
+        copyBtn.classList.remove('copied');
+        copyBtn.textContent = originalText;
+        status.textContent = '';
+      }, 2500);
+    } catch {
+      status.textContent = `Copie este link: ${url}`;
+    }
+  });
+}
 $('#year').textContent = String(new Date().getFullYear());
 
 /* Interactive Neural Network & Vector Node Canvas */
@@ -790,6 +804,56 @@ function initArthurCopilot() {
   });
 }
 initArthurCopilot();
+
+/* Smooth Scroll Reveal Animations */
+function initScrollReveal() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  const targets = document.querySelectorAll('.section-head, .project-card, .stack-tabs, .stack-panel, .career-layout, .legal-feature, .contact-layout');
+  targets.forEach(el => el.classList.add('reveal-on-scroll'));
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  targets.forEach(el => observer.observe(el));
+}
+initScrollReveal();
+
+/* Active Navigation Scrollspy */
+function initScrollSpy() {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('#navigation a[href^="#"]');
+  if (!sections.length || !navLinks.length) return;
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    const scrollY = window.pageYOffset;
+
+    sections.forEach(sec => {
+      const secTop = sec.offsetTop - 140;
+      const secHeight = sec.offsetHeight;
+      if (scrollY >= secTop && scrollY < secTop + secHeight) {
+        current = sec.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('nav-active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('nav-active');
+      }
+    });
+  }, { passive: true });
+}
+initScrollSpy();
+
 
 
 
