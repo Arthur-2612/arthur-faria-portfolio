@@ -403,7 +403,7 @@ function initHeroTypewriter() {
     'Sistemas Multiagentes',
     'Arquiteturas RAG & pgvector',
     'IA Aplicada & Engenharia de Dados',
-    'Visão Computacional & YOLO',
+
     'Integração de Modelos a Sistemas'
   ];
   let wordIndex = 0;
