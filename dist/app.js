@@ -525,5 +525,159 @@ function initProject3DTilt() {
 }
 initProject3DTilt();
 
+/* Interactive Arthur Copilot (Simulated AI Agent) */
+function initArthurCopilot() {
+  const toggleBtn = document.getElementById('copilot-toggle');
+  const navBtn = document.getElementById('nav-copilot-btn');
+  const panel = document.getElementById('copilot-panel');
+  const closeBtn = document.getElementById('copilot-close');
+  const form = document.getElementById('copilot-form');
+  const input = document.getElementById('copilot-input');
+  const messagesBox = document.getElementById('copilot-messages');
+  const promptButtons = document.querySelectorAll('.copilot-prompt-btn');
+
+  if (!panel || !toggleBtn) return;
+
+  function setOpen(open) {
+    panel.hidden = !open;
+    panel.setAttribute('aria-hidden', String(!open));
+    toggleBtn.setAttribute('aria-expanded', String(open));
+    if (open) {
+      setTimeout(() => input.focus(), 150);
+    }
+  }
+
+  toggleBtn.addEventListener('click', () => setOpen(panel.hidden));
+  if (navBtn) navBtn.addEventListener('click', () => setOpen(true));
+  closeBtn.addEventListener('click', () => setOpen(false));
+
+  const knowledge = {
+    agents: {
+      thought: '[ADK Concierge: Consultando arquitetura de 4 especialistas + Google ADK...]',
+      text: 'No <strong>Home Credit</strong>, o Arthur atuou na construção de um sistema multiagente com o <strong>Google ADK</strong>. O agente <em>Concierge</em> recebe as requisições e aciona especialistas (Bureau externo, Pagamentos, Cartão e Contratos). As ferramentas em Python/Pandas calculam indicadores sobre 7 tabelas e consolidam a análise em JSON estruturado com Pydantic.',
+      action: { label: 'Explorar projeto Home Credit ↗', projectKey: 'agents' }
+    },
+    legal: {
+      thought: '[RAG Ingestion Engine: Indexando Projuris GED + Llama 3.1 pgvector...]',
+      text: 'Na <strong>2RP Net</strong>, o Arthur atua no agente jurídico para elaboração de termos aditivos. A solução integra-se ao <strong>Projuris</strong>, processa contratos históricos em chunks vetoriais com <strong>pgvector</strong> e utiliza RAG com <strong>Llama 3.1 8B</strong> para sugerir minutas editáveis em DOCX via <code>python-docx</code> — sempre com revisão jurídica humana obrigatória.',
+      action: { label: 'Ver especificações do Agente Jurídico ↗', projectKey: 'legal' }
+    },
+    stack: {
+      thought: '[Skills Resolver: Mapeando competências em IA, Dados e Software...]',
+      text: 'A stack principal do Arthur conecta:<br>• <strong>IA & Agentes:</strong> Google ADK, RAG, Busca Vetorial, pgvector, Llama 3.1, Pydantic.<br>• <strong>Dados & Engenharia:</strong> Python, Pandas, BigQuery, PySpark, SQL.<br>• <strong>Software & Backend:</strong> FastAPI, Java Spring Boot, Docker, PostgreSQL.<br>• <strong>Visão:</strong> YOLO, OpenCV, Roboflow e integração com CLP/Arduino.',
+      action: { label: 'Conhecer stack em detalhes ↗', href: '#estudos' }
+    },
+    pet: {
+      thought: '[Computer Vision Pipeline: Carregando modelo YOLO + detecção na esteira...]',
+      text: 'No TCC do SENAI, o Arthur aplicou IA e visão computacional com <strong>Python, YOLO e Roboflow</strong> para inspecionar garrafas PET em tempo real em uma esteira industrial. O modelo identifica ausência de tampa ou rótulo e comanda a rejeição física via CLP Omron e atuador pneumático.',
+      action: { label: 'Ver projeto de Visão Computacional ↗', projectKey: 'pet' }
+    },
+    exchange: {
+      thought: '[Spring Boot Monolith: Recuperando arquitetura do Projeto Integrador...]',
+      text: 'O <strong>SENAI Exchange</strong> é uma plataforma de trocas de itens entre alunos da faculdade. Construído em equipe com <strong>Java, Spring Boot, PostgreSQL e Docker Compose</strong>, conectando regras de negócio e interface web.',
+      action: { label: 'Ver SENAI Exchange ↗', projectKey: 'exchange' }
+    }
+  };
+
+  let isTyping = false;
+
+  function appendMessage(role, htmlContent, thoughtText = null, actionObj = null) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `copilot-msg copilot-msg-${role}`;
+
+    if (thoughtText) {
+      const thoughtDiv = document.createElement('div');
+      thoughtDiv.className = 'copilot-thought';
+      thoughtDiv.innerHTML = `<span class="copilot-thought-tag">ROUTER</span> ${thoughtText}`;
+      msgDiv.appendChild(thoughtDiv);
+    }
+
+    const bodyP = document.createElement('p');
+    bodyP.innerHTML = htmlContent;
+    msgDiv.appendChild(bodyP);
+
+    if (actionObj) {
+      const actionBtn = document.createElement('button');
+      actionBtn.className = 'detail-link';
+      actionBtn.style.marginTop = '10px';
+      actionBtn.style.fontSize = '0.78rem';
+      actionBtn.textContent = actionObj.label;
+      if (actionObj.projectKey) {
+        actionBtn.addEventListener('click', () => {
+          setOpen(false);
+          const trigger = document.querySelector(`[data-project="${actionObj.projectKey}"]`);
+          if (trigger) trigger.click();
+        });
+      } else if (actionObj.href) {
+        actionBtn.addEventListener('click', () => {
+          setOpen(false);
+          window.location.hash = actionObj.href;
+        });
+      }
+      msgDiv.appendChild(actionBtn);
+    }
+
+    messagesBox.appendChild(msgDiv);
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+  }
+
+  function handleQuery(queryText, key = null) {
+    if (isTyping) return;
+    appendMessage('user', queryText);
+
+    isTyping = true;
+    const lower = queryText.toLowerCase();
+
+    let matchedKey = key;
+    if (!matchedKey) {
+      if (lower.includes('home credit') || lower.includes('multiagente') || lower.includes('adk') || lower.includes('agente')) {
+        matchedKey = 'agents';
+      } else if (lower.includes('jurídico') || lower.includes('juridico') || lower.includes('rag') || lower.includes('projuris') || lower.includes('aditivo')) {
+        matchedKey = 'legal';
+      } else if (lower.includes('pet') || lower.includes('garrafa') || lower.includes('yolo') || lower.includes('visão') || lower.includes('visao') || lower.includes('tcc')) {
+        matchedKey = 'pet';
+      } else if (lower.includes('exchange') || lower.includes('troca') || lower.includes('spring') || lower.includes('java')) {
+        matchedKey = 'exchange';
+      } else if (lower.includes('stack') || lower.includes('tecnologia') || lower.includes('linguagem') || lower.includes('python')) {
+        matchedKey = 'stack';
+      } else if (lower.includes('contato') || lower.includes('linkedin') || lower.includes('conversar') || lower.includes('email')) {
+        setTimeout(() => {
+          appendMessage('ai', 'Você pode falar diretamente com o Arthur no <strong>LinkedIn</strong> ou explorar o código de todos os projetos no <strong>GitHub</strong>!', '[Contact Node: Ativando links diretos de comunicação...]', { label: 'Conectar no LinkedIn ↗', href: '#conectar' });
+          isTyping = false;
+        }, 400);
+        return;
+      }
+    }
+
+    const item = knowledge[matchedKey] || {
+      thought: '[General Agent: Sintetizando perfil profissional do Arthur...]',
+      text: 'O Arthur estuda <strong>ADS no SENAI</strong> e é estagiário na <strong>2RP Net</strong>, especializado em <strong>arquitetura de IA, RAG, agentes inteligentes (Google ADK) e análise de dados</strong>. Escolha uma das sugestões acima para explorar um projeto específico!',
+      action: { label: 'Explorar todos os projetos ↗', href: '#projetos' }
+    };
+
+    setTimeout(() => {
+      appendMessage('ai', item.text, item.thought, item.action);
+      isTyping = false;
+    }, 450);
+  }
+
+  promptButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const promptKey = btn.dataset.prompt;
+      handleQuery(btn.textContent.trim(), promptKey);
+    });
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const val = input.value.trim();
+    if (!val) return;
+    input.value = '';
+    handleQuery(val);
+  });
+}
+initArthurCopilot();
+
+
 
 
