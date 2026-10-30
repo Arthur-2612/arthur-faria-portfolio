@@ -1,6 +1,113 @@
 'use strict';
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
+/* Synthesized Web Audio API Sound Effects (Zero External Assets) */
+class SoundFX {
+  constructor() {
+    this.ctx = null;
+    this.enabled = localStorage.getItem('portfolio_audio_enabled') === 'true';
+    this.initUI();
+  }
+
+  ensureContext() {
+    if (!this.ctx) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) this.ctx = new AudioCtx();
+    }
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  }
+
+  toggle() {
+    this.enabled = !this.enabled;
+    localStorage.setItem('portfolio_audio_enabled', String(this.enabled));
+    this.updateButton();
+    if (this.enabled) {
+      this.ensureContext();
+      this.playTone(587.33, 0.08, 'sine', 0.08); // Chime D5
+    }
+  }
+
+  initUI() {
+    const btn = document.getElementById('sound-toggle');
+    if (!btn) return;
+    this.updateButton();
+    btn.addEventListener('click', () => this.toggle());
+  }
+
+  updateButton() {
+    const btn = document.getElementById('sound-toggle');
+    if (!btn) return;
+    btn.classList.toggle('muted', !this.enabled);
+    btn.setAttribute('aria-label', this.enabled ? 'Desativar efeitos sonoros' : 'Ativar efeitos sonoros');
+    btn.setAttribute('title', this.enabled ? 'Sons ativados (clique para silenciar)' : 'Sons desativados (clique para ativar)');
+    const iconOn = btn.querySelector('.sound-icon-on');
+    const iconOff = btn.querySelector('.sound-icon-off');
+    if (iconOn && iconOff) {
+      iconOn.hidden = !this.enabled;
+      iconOff.hidden = this.enabled;
+    }
+  }
+
+  playTone(freq, duration = 0.05, type = 'sine', gainVal = 0.04) {
+    if (!this.enabled) return;
+    try {
+      this.ensureContext();
+      if (!this.ctx) return;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const now = this.ctx.currentTime;
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now);
+      gain.gain.setValueAtTime(gainVal, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + duration);
+    } catch {
+      // Audio autoplay policy
+    }
+  }
+
+  click() {
+    this.playTone(880, 0.035, 'triangle', 0.03);
+  }
+
+  pop() {
+    this.playTone(440, 0.06, 'sine', 0.04);
+  }
+
+  modalOpen() {
+    if (!this.enabled) return;
+    this.playTone(392.00, 0.06, 'sine', 0.03);
+    setTimeout(() => this.playTone(587.33, 0.08, 'sine', 0.04), 50);
+  }
+
+  modalClose() {
+    if (!this.enabled) return;
+    this.playTone(523.25, 0.05, 'sine', 0.03);
+    setTimeout(() => this.playTone(392.00, 0.07, 'sine', 0.02), 45);
+  }
+
+  success() {
+    if (!this.enabled) return;
+    this.playTone(523.25, 0.06, 'sine', 0.04);
+    setTimeout(() => this.playTone(659.25, 0.08, 'sine', 0.04), 55);
+  }
+
+  alert() {
+    if (!this.enabled) return;
+    this.playTone(311.13, 0.09, 'sawtooth', 0.03);
+  }
+}
+const sfx = new SoundFX();
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 const menuButton = $('.menu-toggle');
 const navigation = $('#navigation');
 function closeMenu() {
@@ -331,22 +438,336 @@ function renderFlow(project, key) {
       btn.addEventListener('click', () => {
         explorer.querySelectorAll('.agent-scenario-btn').forEach(b => b.classList.toggle('active', b === btn));
         updateScenario(btn.dataset.scenario);
+        sfx.click();
       });
     });
 
     updateScenario('low_risk');
     target.append(explorer);
   }
+  if (key === 'pet') {
+    const explorer = document.createElement('div');
+    explorer.className = 'vision-explorer';
+    explorer.innerHTML = `
+      <div class="agent-sim-head">
+        <span class="architecture-label">PLAYGROUND INTERATIVO · YOLO &amp; AUTOMAÇÃO INDUSTRIAL</span>
+        <h3>Simulador da Esteira de Inspeção em Tempo Real</h3>
+      </div>
+      <p class="agent-sim-intro">Selecione uma amostra da esteira para testar a inferência YOLOv8 e o envio de sinal elétrico ao CLP Omron:</p>
+      <div class="agent-scenarios" role="group" aria-label="Selecione uma amostra para inspecionar">
+        <button class="agent-scenario-btn active" data-sample="conforme">Amostra 01 · Conforme (Tampa + Rótulo)</button>
+        <button class="agent-scenario-btn" data-sample="sem_tampa">Amostra 02 · Sem Tampa (Defeito Rejeitado)</button>
+        <button class="agent-scenario-btn" data-sample="sem_rotulo">Amostra 03 · Sem Rótulo (Defeito Rejeitado)</button>
+      </div>
+
+      <div class="vision-viewport">
+        <div class="vision-stream-header">
+          <span class="vision-live-tag">LIVE FEED · USB CAM [640×640 @ 30 FPS]</span>
+          <span id="vision-inference-stat">INFERÊNCIA: 22.8ms · YOLOv8n</span>
+        </div>
+
+        <div class="vision-conveyor-stage">
+          <div class="vision-bottle-render">
+            <div class="bottle-cap" id="render-bottle-cap"></div>
+            <div class="bottle-neck"></div>
+            <div class="bottle-body">
+              <div class="bottle-label" id="render-bottle-label">PET 500ML</div>
+            </div>
+            <div class="vision-bbox bbox-cap" id="bbox-cap">
+              <span class="bbox-tag" id="tag-cap">tampa 97.4%</span>
+            </div>
+            <div class="vision-bbox bbox-label" id="bbox-label">
+              <span class="bbox-tag" id="tag-label">rotulo 98.1%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="vision-telemetry-row">
+          <div class="vision-metric-pill success" id="pill-verdict">
+            <span>VEREDITO VISÃO IA</span>
+            <strong id="vision-verdict">CONFORME (APROVADO)</strong>
+          </div>
+          <div class="vision-metric-pill" id="pill-clp">
+            <span>SINAL CLP (OMRON)</span>
+            <strong id="vision-clp">0V (DESATIVADO)</strong>
+          </div>
+          <div class="vision-metric-pill" id="pill-piston">
+            <span>ATUADOR PNEUMÁTICO</span>
+            <strong id="vision-piston">RECOLHIDO (FLUXO LIVRE)</strong>
+          </div>
+          <div class="vision-metric-pill">
+            <span>CONFIANÇA MÉDIA</span>
+            <strong id="vision-confidence">97.8%</strong>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const samples = {
+      conforme: {
+        capVisible: true,
+        labelVisible: true,
+        capAlert: false,
+        labelAlert: false,
+        capText: 'tampa 97.4%',
+        labelText: 'rotulo 98.1%',
+        stat: 'INFERÊNCIA: 22.8ms · YOLOv8n',
+        verdict: 'CONFORME (APROVADO)',
+        isSuccess: true,
+        clp: '0V (ESTEIRA CONTÍNUA)',
+        piston: 'RECOLHIDO (FLUXO LIVRE)',
+        confidence: '97.8%'
+      },
+      sem_tampa: {
+        capVisible: false,
+        labelVisible: true,
+        capAlert: true,
+        labelAlert: false,
+        capText: 'AUSÊNCIA: TAMPA 0.0%',
+        labelText: 'rotulo 96.8%',
+        stat: 'INFERÊNCIA: 24.1ms · YOLOv8n',
+        verdict: 'REJEITADO (SEM TAMPA)',
+        isSuccess: false,
+        clp: '24V HIGH (PULSO 150ms)',
+        piston: 'DISPARADO (DESCARTE)',
+        confidence: '48.4%'
+      },
+      sem_rotulo: {
+        capVisible: true,
+        labelVisible: false,
+        capAlert: false,
+        labelAlert: true,
+        capText: 'tampa 96.2%',
+        labelText: 'AUSÊNCIA: RÓTULO 0.0%',
+        stat: 'INFERÊNCIA: 23.5ms · YOLOv8n',
+        verdict: 'REJEITADO (SEM RÓTULO)',
+        isSuccess: false,
+        clp: '24V HIGH (PULSO 150ms)',
+        piston: 'DISPARADO (DESCARTE)',
+        confidence: '48.1%'
+      }
+    };
+
+    function updateSample(sampleKey) {
+      const data = samples[sampleKey];
+      if (!data) return;
+      const capEl = explorer.querySelector('#render-bottle-cap');
+      const labelEl = explorer.querySelector('#render-bottle-label');
+      const bboxCap = explorer.querySelector('#bbox-cap');
+      const bboxLabel = explorer.querySelector('#bbox-label');
+      const tagCap = explorer.querySelector('#tag-cap');
+      const tagLabel = explorer.querySelector('#tag-label');
+      const pillVerdict = explorer.querySelector('#pill-verdict');
+      const pillClp = explorer.querySelector('#pill-clp');
+      const pillPiston = explorer.querySelector('#pill-piston');
+
+      capEl.style.opacity = data.capVisible ? '1' : '0.15';
+      labelEl.style.opacity = data.labelVisible ? '1' : '0.15';
+
+      bboxCap.classList.toggle('bbox-alert', data.capAlert);
+      tagCap.classList.toggle('alert-tag', data.capAlert);
+      tagCap.textContent = data.capText;
+
+      bboxLabel.classList.toggle('bbox-alert', data.labelAlert);
+      tagLabel.classList.toggle('alert-tag', data.labelAlert);
+      tagLabel.textContent = data.labelText;
+
+      explorer.querySelector('#vision-inference-stat').textContent = data.stat;
+      explorer.querySelector('#vision-verdict').textContent = data.verdict;
+      explorer.querySelector('#vision-clp').textContent = data.clp;
+      explorer.querySelector('#vision-piston').textContent = data.piston;
+      explorer.querySelector('#vision-confidence').textContent = data.confidence;
+
+      pillVerdict.className = `vision-metric-pill ${data.isSuccess ? 'success' : 'warning'}`;
+      pillClp.className = `vision-metric-pill ${data.isSuccess ? '' : 'warning'}`;
+      pillPiston.className = `vision-metric-pill ${data.isSuccess ? '' : 'warning'}`;
+
+      if (data.isSuccess) {
+        sfx.success();
+      } else {
+        sfx.alert();
+      }
+    }
+
+    explorer.querySelectorAll('.agent-scenario-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        explorer.querySelectorAll('.agent-scenario-btn').forEach(b => b.classList.toggle('active', b === btn));
+        updateSample(btn.dataset.sample);
+      });
+    });
+
+    target.append(explorer);
+  }
+
+  if (key === 'exchange') {
+    const explorer = document.createElement('div');
+    explorer.className = 'exchange-explorer';
+    explorer.innerHTML = `
+      <div class="agent-sim-head">
+        <span class="architecture-label">PLAYGROUND INTERATIVO · SPRING BOOT &amp; POSTGRESQL</span>
+        <h3>Simulador do Ciclo de Requisição &amp; Transação ACID</h3>
+      </div>
+      <p class="agent-sim-intro">Teste as rotas da API REST do SENAI Exchange e acompanhe a esteira de validação, regras de serviço e persistência relacional:</p>
+      <div class="agent-scenarios" role="group" aria-label="Selecione um endpoint para testar">
+        <button class="agent-scenario-btn active" data-exchange="post_troca">POST /api/trocas · Solicitar Troca</button>
+        <button class="agent-scenario-btn" data-exchange="get_itens">GET /api/itens?status=DISPONIVEL · Catálogo</button>
+        <button class="agent-scenario-btn" data-exchange="put_aceite">PUT /api/trocas/14/aceitar · Aceite &amp; Conclusão</button>
+      </div>
+
+      <div class="exchange-sim-box">
+        <div class="exchange-api-strip">
+          <span class="exchange-method post" id="exchange-method">POST</span>
+          <span id="exchange-path">/api/trocas</span>
+          <span class="exchange-status-code" id="exchange-status">201 CREATED (18ms)</span>
+        </div>
+
+        <div class="agent-pydantic-output">
+          <div class="pydantic-header">
+            <span>RESPOSTA DO ENDPOINT (JSON SERIALIZADO COM JACKSON)</span>
+            <span class="pydantic-status" id="exchange-res-status">STATUS HTTP 201 · SUCESSO</span>
+          </div>
+          <pre class="pydantic-code" id="exchange-code"><code></code></pre>
+        </div>
+
+        <div class="exchange-flow-steps">
+          <div class="exchange-step-card">
+            <small>ETAPA 01 · CONTROLLER</small>
+            <strong id="ex-step1-title">Validação Jakarta</strong>
+            <p id="ex-step1-desc">Recebimento do DTO com @Valid. Checagem de integridade dos IDs e campos obrigatórios.</p>
+          </div>
+          <div class="exchange-step-card">
+            <small>ETAPA 02 · SERVICE</small>
+            <strong id="ex-step2-title">Regras de Negócio</strong>
+            <p id="ex-step2-desc">Garante que ambos os itens pertencem a cursos compatíveis e estão com status DISPONÍVEL.</p>
+          </div>
+          <div class="exchange-step-card">
+            <small>ETAPA 03 · JPA / POSTGRES</small>
+            <strong id="ex-step3-title">Transação ACID</strong>
+            <p id="ex-step3-desc">Execução com @Transactional. Atualização atômica das chaves estrangeiras e logs de troca.</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const exchangeScenarios = {
+      post_troca: {
+        method: 'POST',
+        methodClass: 'post',
+        path: '/api/trocas',
+        status: '201 CREATED (18ms)',
+        resStatus: 'STATUS HTTP 201 · TRANSAÇÃO INICIADA',
+        json: {
+          id: 14,
+          aluno_solicitante: {
+            id: 204,
+            nome: "Arthur Silva",
+            curso: "Análise e Desenvolvimento de Sistemas"
+          },
+          item_oferecido: {
+            id: 88,
+            titulo: "Livro Algoritmos Estruturados (Cormen)",
+            categoria: "LIVROS"
+          },
+          aluno_receptor: {
+            id: 119,
+            nome: "Beatriz Oliveira",
+            curso: "Mecatrônica Industrial"
+          },
+          item_solicitado: {
+            id: 52,
+            titulo: "Kit de Componentes Arduino + Sensores",
+            categoria: "ELETRONICA"
+          },
+          status: "PENDENTE_CONFIRMACAO",
+          criado_em: "2026-10-30T14:22:00Z"
+        },
+        step1: { title: "Validação Jakarta", desc: "DTO validado com @NotNull e @Positive. Bloqueio de self-trade pelo proponente." },
+        step2: { title: "Regra de Negócio", desc: "Verificação de disponibilidade dos itens na tabela 'tb_itens' e cálculo de afinidade." },
+        step3: { title: "Persistência JPA", desc: "Inserção em 'tb_trocas' com status PENDENTE e bloqueio temporário do item." }
+      },
+      get_itens: {
+        method: 'GET',
+        methodClass: 'get',
+        path: '/api/itens?status=DISPONIVEL&categoria=LIVROS',
+        status: '200 OK (11ms)',
+        resStatus: 'STATUS HTTP 200 · CATÁLOGO RETORNADO',
+        json: {
+          total_itens: 42,
+          pagina: 0,
+          total_paginas: 5,
+          conteudo: [
+            { id: 88, titulo: "Livro Algoritmos Estruturados", conservacao: "EXCELENTE", dono_id: 204 },
+            { id: 91, titulo: "Clean Code - Robert C. Martin", conservacao: "NOVO", dono_id: 302 },
+            { id: 104, titulo: "Arquitetura Limpa", conservacao: "BOM", dono_id: 115 }
+          ]
+        },
+        step1: { title: "Filtros REST", desc: "Parâmetros mapeados para Specification JPA com predicados dinâmicos." },
+        step2: { title: "Index PostgreSQL", desc: "Consulta otimizada por índice B-Tree composto em (status, categoria)." },
+        step3: { title: "Jackson Serialization", desc: "Projeção de DTO leve para otimizar payload na esteira de rede." }
+      },
+      put_aceite: {
+        method: 'PUT',
+        methodClass: 'put',
+        path: '/api/trocas/14/aceitar',
+        status: '200 OK (24ms)',
+        resStatus: 'STATUS HTTP 200 · TRANSAÇÃO CONCLUÍDA',
+        json: {
+          troca_id: 14,
+          status_anterior: "PENDENTE_CONFIRMACAO",
+          status_atual: "FINALIZADA",
+          transferencia_propriedade: {
+            item_88_novo_proprietario: 119,
+            item_52_novo_proprietario: 204
+          },
+          audit_timestamp: "2026-10-30T14:23:45.102Z",
+          notificacao_enviada: true
+        },
+        step1: { title: "Autenticação & Auth", desc: "Checagem de token JWT: apenas o receptor pode executar a confirmação." },
+        step2: { title: "Lock Otimista (@Version)", desc: "Garante integridade concorrente caso o item tenha sido trocado simultaneamente." },
+        step3: { title: "Commit @Transactional", desc: "Atualização atômica de donos e encerramento de todas as outras propostas concorrentes." }
+      }
+    };
+
+    function updateExchange(scenarioKey) {
+      const data = exchangeScenarios[scenarioKey];
+      if (!data) return;
+      const methodEl = explorer.querySelector('#exchange-method');
+      methodEl.className = `exchange-method ${data.methodClass}`;
+      methodEl.textContent = data.method;
+      explorer.querySelector('#exchange-path').textContent = data.path;
+      explorer.querySelector('#exchange-status').textContent = data.status;
+      explorer.querySelector('#exchange-res-status').textContent = data.resStatus;
+      explorer.querySelector('#exchange-code code').textContent = JSON.stringify(data.json, null, 2);
+
+      explorer.querySelector('#ex-step1-title').textContent = data.step1.title;
+      explorer.querySelector('#ex-step1-desc').textContent = data.step1.desc;
+      explorer.querySelector('#ex-step2-title').textContent = data.step2.title;
+      explorer.querySelector('#ex-step2-desc').textContent = data.step2.desc;
+      explorer.querySelector('#ex-step3-title').textContent = data.step3.title;
+      explorer.querySelector('#ex-step3-desc').textContent = data.step3.desc;
+
+      sfx.click();
+    }
+
+    explorer.querySelectorAll('.agent-scenario-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        explorer.querySelectorAll('.agent-scenario-btn').forEach(b => b.classList.toggle('active', b === btn));
+        updateExchange(btn.dataset.exchange);
+      });
+    });
+
+    updateExchange('post_troca');
+    target.append(explorer);
+  }
+
 }
 function renderLegalArchitecture(project) {
   const target = $('#case-architecture');
   target.innerHTML = `<p class="architecture-intro">Duas esteiras conectadas pelo contexto do contrato.</p><div class="legal-entry"><span class="architecture-label">ENTRADA</span><strong>Projuris → Webhook REST → FastAPI</strong><small>Execução assíncrona com BackgroundTasks, em contêineres no Kubernetes.</small></div><div class="legal-pipelines"><section><p class="architecture-label">01 / INGESTÃO DOCUMENTAL</p><h3>Preparar o conhecimento</h3><ol><li><strong>Buscar documentos</strong><span>Download de contrato, proposta e aditivos no GED do Projuris.</span></li><li><strong>Extrair e normalizar</strong><span>PyMuPDF e python-docx; Tesseract quando houver documento escaneado.</span></li><li><strong>Fragmentar e indexar</strong><span>Chunks por seção, com contrato, versão, página e hash SHA-256.</span></li><li><strong>Gerar embeddings</strong><span>Vetores persistidos para recuperação por similaridade.</span></li></ol></section><section><p class="architecture-label">02 / AGENTE DE RAG</p><h3>Contextualizar e redigir</h3><ol><li><strong>Recuperar o histórico</strong><span>Busca vetorial filtrada por contrato e contexto do último aditivo em vigor.</span></li><li><strong>Gerar a proposta</strong><span>Agente geral e ferramentas modulares; Llama 3.1 8B como modelo principal.</span></li><li><strong>Validar e criar DOCX</strong><span>Regras determinísticas em Python e geração da minuta com python-docx.</span></li><li><strong>Devolver ao Projuris</strong><span>Anexação na requisição via SOAP GED, para revisão do advogado.</span></li></ol></section></div><div class="legal-store"><span class="architecture-label">BASE COMPARTILHADA</span><strong>PostgreSQL + pgvector · Amazon RDS</strong><small>Documentos, metadados, vetores e registros de execução. Busca com índice HNSW e similaridade de cosseno.</small></div><details class="architecture-details"><summary>Decisões e limites da arquitetura</summary><ul><li>A versão revisada utiliza BackgroundTasks do FastAPI para o processamento assíncrono.</li><li>Hash SHA-256 para evitar ingestão duplicada; metadados para preservar o vínculo com o contrato e a versão.</li><li>Fallback corporativo para falhas técnicas do modelo principal, desativado por padrão.</li><li>Arquivos temporários em volume persistente do Kubernetes; observabilidade prevista com Prometheus e Grafana.</li><li>Assinatura via DocuSign depende de comando posterior do advogado, após a revisão.</li></ul></details>`;
   const note = document.createElement('p'); note.className = 'case-note'; note.textContent = project.architectureNote; target.append(note);
 }
-$$('[data-project]').forEach(button => button.addEventListener('click', () => {
-  const key = button.dataset.project;
+function openProjectModal(key, view = 'context') {
   const project = projects[key]; if (!project) return;
-  lastProjectButton = button;
   $('#dialog-category').textContent = project.category;
   $('#dialog-title').textContent = project.title;
   $('#dialog-summary').textContent = project.summary;
@@ -361,14 +782,19 @@ $$('[data-project]').forEach(button => button.addEventListener('click', () => {
   if (project.source) { source.href = project.source; source.textContent = project.sourceLabel; }
   else source.removeAttribute('href');
   $('.dialog-done').textContent = key === 'legal' ? 'Voltar ao portfólio ↙' : 'Voltar aos projetos ↙';
-  activateTab(button.dataset.view === 'demo' && project.demo ? $('#case-tab-demo') : $('#case-tab-context'));
+  activateTab(view === 'demo' && project.demo ? $('#case-tab-demo') : $('#case-tab-context'));
   dialog.showModal(); dialog.scrollTop = 0; document.body.classList.add('dialog-open');
+  sfx.modalOpen();
+}
+$$('[data-project]').forEach(button => button.addEventListener('click', () => {
+  lastProjectButton = button;
+  openProjectModal(button.dataset.project, button.dataset.view);
 }));
 $$('.dialog-close, .dialog-done').forEach(button => button.addEventListener('click', () => dialog.close()));
 let backdropStart = false;
 dialog.addEventListener('pointerdown', event => {backdropStart = event.target === dialog;});
 dialog.addEventListener('click', event => {if (event.target === dialog && backdropStart) dialog.close();});
-dialog.addEventListener('close', () => {clearDemo();document.body.classList.remove('dialog-open');lastProjectButton?.focus({preventScroll:true});});
+dialog.addEventListener('close', () => {clearDemo();document.body.classList.remove('dialog-open');lastProjectButton?.focus({preventScroll:true});sfx.modalClose();});
 const copyBtn = $('#copy-profile');
 if (copyBtn) {
   copyBtn.addEventListener('click', async () => {
@@ -439,9 +865,10 @@ function initHeroTypewriter() {
 }
 initHeroTypewriter();
 
-/* 3D Tilt and Specular Highlight for Project Cards */
+/* 3D Tilt and Specular Highlight for Project Cards and Hero Portrait */
 function initProject3DTilt() {
   const cards = document.querySelectorAll('.project-card');
+  const portrait = document.querySelector('.hero-portrait');
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced || window.innerWidth < 768) return;
 
@@ -478,6 +905,25 @@ function initProject3DTilt() {
       visual.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0px)';
     });
   });
+
+  if (portrait) {
+    const frame = portrait.querySelector('.portrait-frame');
+    if (frame) {
+      portrait.addEventListener('mousemove', e => {
+        const rect = frame.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const normX = (x / rect.width - 0.5) * 2;
+        const normY = (y / rect.height - 0.5) * 2;
+        const rotateX = -normY * 8;
+        const rotateY = normX * 8;
+        frame.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px) scale(1.01)`;
+      });
+      portrait.addEventListener('mouseleave', () => {
+        frame.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)';
+      });
+    }
+  }
 }
 initProject3DTilt();
 
@@ -493,11 +939,17 @@ function initEngineeringTerminal() {
   const commands = {
     help: () => `
 Comandos suportados:<br>
+• <strong style="color:#fbbf24">projects</strong>: Resumo dos projetos práticos do portfólio<br>
 • <strong style="color:#fbbf24">skills</strong>: Detalhamento técnico da stack e proficiências<br>
 • <strong style="color:#fbbf24">architecture</strong>: Filosofia de desenvolvimento de sistemas e agentes<br>
+• <strong style="color:#fbbf24">pet</strong>: Detalhes da esteira de visão computacional YOLO<br>
+• <strong style="color:#fbbf24">agents</strong>: Arquitetura multiagente do Home Credit<br>
+• <strong style="color:#fbbf24">exchange</strong>: Stack e endpoints do SENAI Exchange<br>
+• <strong style="color:#fbbf24">legal</strong>: Especificações do agente jurídico e RAG<br>
 • <strong style="color:#fbbf24">metrics</strong>: Indicadores de engenharia e produção<br>
 • <strong style="color:#fbbf24">whoami</strong>: Perfil e foco profissional de Arthur Faria<br>
 • <strong style="color:#fbbf24">contact</strong>: Links diretos e canais de contato<br>
+• <strong style="color:#fbbf24">matrix</strong>: Conectar ao terminal neural<br>
 • <strong style="color:#fbbf24">clear</strong>: Limpa a janela do terminal
     `,
     skills: () => `
@@ -533,6 +985,55 @@ Foco: Conectar dados corporativos, modelos de linguagem e engenharia de software
 • LinkedIn: <a href="https://www.linkedin.com/in/arthur-faria-e-silva-85b04a290/" target="_blank" rel="noopener noreferrer" style="color:#f59e0b;text-decoration:underline">linkedin.com/in/arthur-faria-e-silva-85b04a290/</a><br>
 • GitHub:   <a href="https://github.com/Arthur-2612" target="_blank" rel="noopener noreferrer" style="color:#f59e0b;text-decoration:underline">github.com/Arthur-2612</a><br>
 • Foco:     Estágio &amp; Oportunidades em IA Aplicada / Engenharia de Software
+    `,
+    projects: () => `
+<strong style="color:#fbbf24">PROJETOS EM DESTAQUE NO PORTFÓLIO:</strong><br>
+1. <strong>agents:</strong> Home Credit · Sistema multiagente com Google ADK, 4 especialistas e contratos Pydantic.<br>
+2. <strong>pet:</strong> IA para Inspeção de Garrafas PET · YOLOv8, OpenCV e integração com CLP industrial Omron.<br>
+3. <strong>exchange:</strong> SENAI Exchange · Aplicação Full-Stack com Java 17, Spring Boot 3 e PostgreSQL.<br>
+4. <strong>legal:</strong> Agente Jurídico · Projuris, RAG híbrido com pgvector e geração de minutas DOCX.<br>
+<span style="color:#8f98a8">Dica: Digite o nome de qualquer projeto (ex: <span style="color:#fbbf24">pet</span>, <span style="color:#fbbf24">agents</span>) para ver os detalhes técnicos.</span>
+    `,
+    projetos: () => commands.projects(),
+    pet: () => `
+<strong style="color:#fbbf24">INSPEÇÃO DE GARRAFAS PET · YOLO &amp; AUTOMAÇÃO:</strong><br>
+• <strong>Hardware:</strong> Câmera USB 640x640 @ 30 FPS, CLP Omron CP1E, Pistão Pneumático<br>
+• <strong>Inferência:</strong> YOLOv8 nano via PyTorch/ONNX Runtime (latência média ~22.8ms)<br>
+• <strong>Classes:</strong> Tampa (conforme/ausente), Rótulo (conforme/ausente), Garrafa<br>
+• <strong>Acionamento:</strong> Saída digital 24V aciona o descarte mecânico de peças não-conformes.<br>
+• <strong>TCC:</strong> Desenvolvido e homologado no SENAI Gaspar Ricardo Jr. (2025).
+    `,
+    agents: () => `
+<strong style="color:#fbbf24">HOME CREDIT · SISTEMA MULTIAGENTE (GOOGLE ADK):</strong><br>
+• <strong>Orquestrador:</strong> Concierge Agent delegando chamadas semânticas<br>
+• <strong>Especialistas:</strong> Bureau (créditos externos), Pagamentos (atrasos), Cartão (limite) e Contratos<br>
+• <strong>Contratos Estritos:</strong> Schemas Pydantic v2 com validação 100% determinística<br>
+• <strong>Tratamento de Dados:</strong> Ausência de histórico e tratamento explícito de nulos em Pandas.
+    `,
+    exchange: () => `
+<strong style="color:#fbbf24">SENAI EXCHANGE · ARQUITETURA BACKEND:</strong><br>
+• <strong>Framework:</strong> Java 17 + Spring Boot 3 (Spring Data JPA, Hibernate)<br>
+• <strong>Banco de Dados:</strong> PostgreSQL 15 com índices compostos e Docker Compose<br>
+• <strong>Integridade:</strong> Validações Jakarta Bean Validation e transações ACID @Transactional<br>
+• <strong>Projeto Integrador:</strong> Desenvolvido em equipe para a comunidade acadêmica do SENAI.
+    `,
+    legal: () => `
+<strong style="color:#fbbf24">AGENTE JURÍDICO · PROJURIS &amp; RAG (2RP NET):</strong><br>
+• <strong>Pipeline:</strong> Ingestão assíncrona FastAPI BackgroundTasks + Webhooks Projuris<br>
+• <strong>Chunking &amp; Vetores:</strong> PostgreSQL + pgvector (índice HNSW) com hashes SHA-256<br>
+• <strong>Geração Documental:</strong> Minuta preliminar DOCX editável gerada via python-docx<br>
+• <strong>Governança:</strong> Human-in-the-Loop obrigatório (revisão e validação final do advogado).
+    `,
+    matrix: () => `
+<pre style="color:#10b981;font-family:monospace;font-size:0.75rem;margin:0;line-height:1.2">
+01000001 01110010 01110100 01101000 01110101 01110010
+ [ ARTHUR FARIA - ENGENHARIA DE DADOS & IA APLICADA ]
+  ▲   ┌─────────┐   ▲   ┌──────────┐   ▲   ┌──────────┐
+  │   │  YOLO   │   │   │  AGENTS  │   │   │   RAG    │
+  │   │ INSPEC  │   │   │   ADK    │   │   │ PGVECTOR │
+  ┴   └─────────┘   ┴   └──────────┘   ┴   └──────────┘
+</pre>
+<span style="color:#10b981">Conexão neural ativa. Todos os sistemas operando normalmente.</span>
     `,
     clear: () => null
   };
@@ -638,3 +1139,404 @@ initScrollSpy();
 
 
 
+
+function runTerminalCmd(cmd) {
+  const terminalSec = document.getElementById('terminal-section');
+  if (terminalSec) terminalSec.scrollIntoView({ behavior: 'smooth' });
+  const termInput = document.getElementById('terminal-input');
+  if (termInput) {
+    termInput.value = cmd;
+    const form = document.getElementById('terminal-form');
+    if (form) {
+      form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    }
+  }
+}
+
+/* Command Palette (Ctrl+K / ⌘K) Implementation */
+function initCommandPalette() {
+  const dialog = document.getElementById('command-palette-dialog');
+  const openBtn = document.getElementById('open-cmd-palette');
+  const input = document.getElementById('cmd-search-input');
+  const list = document.getElementById('cmd-results-list');
+  if (!dialog || !input || !list) return;
+
+  const actions = [
+    {
+      group: 'PROJETOS SELECIONADOS',
+      id: 'proj_agents',
+      title: 'Home Credit · Multiagentes',
+      desc: 'Orquestração com Google ADK, 4 especialistas e Pydantic',
+      badge: 'Multiagentes',
+      keywords: 'home credit agentes google adk pydantic dados python bigquery',
+      run: () => openProjectModal('agents')
+    },
+    {
+      group: 'PROJETOS SELECIONADOS',
+      id: 'proj_pet',
+      title: 'Inspeção de Garrafas PET · YOLO',
+      desc: 'Detecção de irregularidades e acionamento de CLP industrial',
+      badge: 'YOLO & Visão',
+      keywords: 'pet garrafas yolo visao computacional clp esteira tcc senai roboflow',
+      run: () => openProjectModal('pet')
+    },
+    {
+      group: 'PROJETOS SELECIONADOS',
+      id: 'proj_exchange',
+      title: 'SENAI Exchange · Spring Boot',
+      desc: 'Plataforma de troca com API REST, PostgreSQL e Docker',
+      badge: 'Full-Stack',
+      keywords: 'senai exchange spring boot java postgresql docker api rest pi',
+      run: () => openProjectModal('exchange')
+    },
+    {
+      group: 'PROJETOS SELECIONADOS',
+      id: 'proj_legal',
+      title: 'Agente Jurídico · Projuris & RAG',
+      desc: 'Recuperação com pgvector e geração de minutas preliminares DOCX',
+      badge: 'RAG & pgvector',
+      keywords: 'legal projuris juridico rag pgvector fastapi minutas 2rp',
+      run: () => openProjectModal('legal')
+    },
+    {
+      group: 'NAVEGAÇÃO RÁPIDA',
+      id: 'nav_projetos',
+      title: 'Projetos Selecionados',
+      desc: 'Ver a grade de projetos práticos e demonstrações em vídeo',
+      badge: 'Seção',
+      keywords: 'projetos cases portfolio video demos',
+      run: () => { const el = document.getElementById('projetos'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
+    },
+    {
+      group: 'NAVEGAÇÃO RÁPIDA',
+      id: 'nav_estudos',
+      title: 'Tecnologias & Áreas de Atuação',
+      desc: 'Explorar stack: IA & RAG, Agentes, Dados & ML, Integrações',
+      badge: 'Seção',
+      keywords: 'tecnologias stack estudos competencias',
+      run: () => { const el = document.getElementById('estudos'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
+    },
+    {
+      group: 'NAVEGAÇÃO RÁPIDA',
+      id: 'nav_terminal',
+      title: 'Terminal Interativo CLI',
+      desc: 'Linha de comando para explorar métricas, stack e arquitetura',
+      badge: 'Terminal',
+      keywords: 'terminal cli console comandos bash',
+      run: () => {
+        const el = document.getElementById('terminal-section');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        const termInput = document.getElementById('terminal-input');
+        if (termInput) setTimeout(() => termInput.focus(), 300);
+      }
+    },
+    {
+      group: 'NAVEGAÇÃO RÁPIDA',
+      id: 'nav_trajetoria',
+      title: 'Trajetória & Formação',
+      desc: 'ADS no SENAI e estágio em engenharia de dados & IA na 2RP Net',
+      badge: 'Carreira',
+      keywords: 'trajetoria carreira senai ads 2rp net estagio formacao',
+      run: () => { const el = document.getElementById('trajetoria'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
+    },
+    {
+      group: 'NAVEGAÇÃO RÁPIDA',
+      id: 'nav_conectar',
+      title: 'Contato & Redes',
+      desc: 'LinkedIn, GitHub e canais para contato profissional',
+      badge: 'Contato',
+      keywords: 'contato linkedin github email conectar',
+      run: () => { const el = document.getElementById('conectar'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
+    },
+    {
+      group: 'FILTROS DE PROJETOS',
+      id: 'filter_all',
+      title: 'Filtrar: Todos os Projetos',
+      desc: 'Exibir todos os 3 projetos selecionados',
+      badge: 'Filtro',
+      keywords: 'filtro todos all',
+      run: () => {
+        const btn = document.querySelector('[data-filter="all"]');
+        if (btn) btn.click();
+        const el = document.getElementById('projetos');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'FILTROS DE PROJETOS',
+      id: 'filter_data',
+      title: 'Filtrar: Agentes & Dados',
+      desc: 'Exibir projetos de multiagentes e engenharia de dados',
+      badge: 'Filtro',
+      keywords: 'filtro agentes dados multiagent',
+      run: () => {
+        const btn = document.querySelector('[data-filter="data"]');
+        if (btn) btn.click();
+        const el = document.getElementById('projetos');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'FILTROS DE PROJETOS',
+      id: 'filter_vision',
+      title: 'Filtrar: Visão & IA',
+      desc: 'Exibir projetos de visão computacional e automação',
+      badge: 'Filtro',
+      keywords: 'filtro visao ia yolo',
+      run: () => {
+        const btn = document.querySelector('[data-filter="vision"]');
+        if (btn) btn.click();
+        const el = document.getElementById('projetos');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'FILTROS DE PROJETOS',
+      id: 'filter_dev',
+      title: 'Filtrar: Sistemas & Full-Stack',
+      desc: 'Exibir projetos integradores e desenvolvimento backend',
+      badge: 'Filtro',
+      keywords: 'filtro sistemas dev web fullstack',
+      run: () => {
+        const btn = document.querySelector('[data-filter="dev"]');
+        if (btn) btn.click();
+        const el = document.getElementById('projetos');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'COMANDOS & UTILIDADES',
+      id: 'cmd_skills',
+      title: 'Executar: skills no Terminal',
+      desc: 'Apresentar resumo detalhado da stack técnica',
+      badge: 'CLI',
+      keywords: 'skills terminal stack tecnologias python java',
+      run: () => runTerminalCmd('skills')
+    },
+    {
+      group: 'COMANDOS & UTILIDADES',
+      id: 'cmd_arch',
+      title: 'Executar: architecture no Terminal',
+      desc: 'Filosofia de arquitetura, contratos Pydantic e Human-in-the-Loop',
+      badge: 'CLI',
+      keywords: 'architecture arquitetura terminal filosofia',
+      run: () => runTerminalCmd('architecture')
+    },
+    {
+      group: 'COMANDOS & UTILIDADES',
+      id: 'cmd_metrics',
+      title: 'Executar: metrics no Terminal',
+      desc: 'Benchmarks de latência, número de especialistas e esteiras',
+      badge: 'CLI',
+      keywords: 'metrics metricas indicadores benchmarks terminal',
+      run: () => runTerminalCmd('metrics')
+    },
+    {
+      group: 'COMANDOS & UTILIDADES',
+      id: 'cmd_sound',
+      title: 'Alternar Efeitos Sonoros da Interface',
+      desc: 'Ativar ou desativar sintetizador Web Audio de microinterações',
+      badge: 'Áudio',
+      keywords: 'som audio som efeitos sonoros sound fx toggle',
+      run: () => sfx.toggle()
+    },
+    {
+      group: 'COMANDOS & UTILIDADES',
+      id: 'cmd_copy',
+      title: 'Copiar link do LinkedIn de Arthur',
+      desc: 'Copia https://www.linkedin.com/in/arthur-faria-e-silva-85b04a290/ para o clipboard',
+      badge: 'Social',
+      keywords: 'copiar link linkedin perfil compartilhar',
+      run: () => {
+        const copyBtn = document.getElementById('copy-profile');
+        if (copyBtn) copyBtn.click();
+      }
+    }
+  ];
+
+  let selectedIndex = 0;
+  let filtered = [...actions];
+
+  function openPalette() {
+    dialog.showModal();
+    input.value = '';
+    renderResults('');
+    input.focus();
+    sfx.click();
+  }
+
+  function closePalette() {
+    dialog.close();
+    sfx.click();
+  }
+
+  function renderResults(query) {
+    const q = query.trim().toLowerCase();
+    filtered = actions.filter(item => {
+      if (!q) return true;
+      return item.title.toLowerCase().includes(q) ||
+        item.desc.toLowerCase().includes(q) ||
+        item.badge.toLowerCase().includes(q) ||
+        item.keywords.toLowerCase().includes(q);
+    });
+
+    list.replaceChildren();
+
+    if (filtered.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'cmd-empty';
+      empty.style.padding = '24px 16px';
+      empty.style.textAlign = 'center';
+      empty.style.color = '#8f98a8';
+      empty.style.fontSize = '.85rem';
+      empty.textContent = `Nenhum resultado para "${query}". Tente "pet", "skills", "rag" ou "projetos".`;
+      list.appendChild(empty);
+      return;
+    }
+
+    selectedIndex = Math.min(selectedIndex, filtered.length - 1);
+    let currentGroup = '';
+
+    filtered.forEach((item, index) => {
+      if (item.group !== currentGroup) {
+        currentGroup = item.group;
+        const groupEl = document.createElement('div');
+        groupEl.className = 'cmd-group-label';
+        groupEl.textContent = currentGroup;
+        list.appendChild(groupEl);
+      }
+
+      const row = document.createElement('div');
+      row.className = `cmd-item ${index === selectedIndex ? 'selected' : ''}`;
+      row.setAttribute('role', 'option');
+      row.setAttribute('aria-selected', String(index === selectedIndex));
+      row.innerHTML = `
+        <div class="cmd-item-left">
+          <span class="cmd-item-icon">›</span>
+          <div class="cmd-item-title">
+            <strong>${escapeHtml(item.title)}</strong>
+            <small>${escapeHtml(item.desc)}</small>
+          </div>
+        </div>
+        <span class="cmd-item-badge">${escapeHtml(item.badge)}</span>
+      `;
+
+      row.addEventListener('click', () => {
+        closePalette();
+        item.run();
+      });
+
+      row.addEventListener('mouseenter', () => {
+        selectedIndex = index;
+        updateSelection();
+      });
+
+      list.appendChild(row);
+    });
+
+    ensureVisible();
+  }
+
+  function updateSelection() {
+    const items = list.querySelectorAll('.cmd-item');
+    items.forEach((item, i) => {
+      item.classList.toggle('selected', i === selectedIndex);
+      item.setAttribute('aria-selected', String(i === selectedIndex));
+    });
+    ensureVisible();
+  }
+
+  function ensureVisible() {
+    const active = list.querySelector('.cmd-item.selected');
+    if (active) {
+      active.scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  input.addEventListener('input', () => {
+    selectedIndex = 0;
+    renderResults(input.value);
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (filtered.length > 0) {
+        selectedIndex = (selectedIndex + 1) % filtered.length;
+        updateSelection();
+        sfx.click();
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (filtered.length > 0) {
+        selectedIndex = (selectedIndex - 1 + filtered.length) % filtered.length;
+        updateSelection();
+        sfx.click();
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filtered[selectedIndex]) {
+        const chosen = filtered[selectedIndex];
+        closePalette();
+        chosen.run();
+      }
+    } else if (e.key === 'Escape') {
+      closePalette();
+    }
+  });
+
+  if (openBtn) openBtn.addEventListener('click', openPalette);
+
+  dialog.addEventListener('click', e => {
+    if (e.target === dialog) closePalette();
+  });
+
+  document.addEventListener('keydown', e => {
+    const isCtrlK = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k';
+    const isSlash = e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName) && !dialog.open;
+    if (isCtrlK || isSlash) {
+      e.preventDefault();
+      if (dialog.open) {
+        closePalette();
+      } else {
+        openPalette();
+      }
+    }
+  });
+}
+initCommandPalette();
+
+/* Tech Tag Synchronization & Highlighting across the Portfolio */
+function initTechTagHighlight() {
+  const allTags = document.querySelectorAll('.tags span, .tech-strip-inner span:not(.strip-label), .bento-pill');
+  if (!allTags.length) return;
+
+  const normalize = text => text.replace(/^[●\s]+/, '').trim().toLowerCase();
+
+  allTags.forEach(tag => {
+    const rawText = tag.textContent;
+    const norm = normalize(rawText);
+    if (!norm || norm.length < 2) return;
+
+    tag.style.cursor = 'pointer';
+    tag.setAttribute('title', `Destacar "${tag.textContent.trim()}" em todo o portfólio`);
+
+    tag.addEventListener('mouseenter', () => {
+      let matchCount = 0;
+      allTags.forEach(other => {
+        if (normalize(other.textContent) === norm) {
+          other.classList.add('tag-highlighted');
+          matchCount++;
+        }
+      });
+      if (matchCount > 1) {
+        sfx.pop();
+      }
+    });
+
+    tag.addEventListener('mouseleave', () => {
+      allTags.forEach(other => other.classList.remove('tag-highlighted'));
+    });
+  });
+}
+initTechTagHighlight();
