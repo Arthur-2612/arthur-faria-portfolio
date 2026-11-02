@@ -935,8 +935,48 @@ function initEngineeringTerminal() {
   const input = document.getElementById('terminal-input');
   const output = document.getElementById('terminal-output');
   const actionBtns = document.querySelectorAll('.terminal-btn');
+  const termSection = document.getElementById('terminal-section');
+  const fullscreenBtn = document.getElementById('terminal-fullscreen-btn');
+  const btnFullscreenDot = document.getElementById('term-btn-fullscreen');
+  const btnClearDot = document.getElementById('term-btn-clear');
+  const btnMinDot = document.getElementById('term-btn-min');
 
   if (!output) return;
+
+  function toggleFullscreen() {
+    if (!termSection) return;
+    const isFs = termSection.classList.toggle('is-fullscreen');
+    document.body.classList.toggle('terminal-open-fullscreen', isFs);
+    if (fullscreenBtn) {
+      fullscreenBtn.innerHTML = isFs ? '⤡ <span>REDUZIR</span>' : '⤢ <span>EXPANDIR</span>';
+      fullscreenBtn.setAttribute('title', isFs ? 'Sair do modo tela cheia (ESC)' : 'Alternar modo tela cheia');
+    }
+    if (typeof sfx !== 'undefined' && sfx.click) sfx.click();
+    if (isFs && input) input.focus();
+  }
+
+  if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
+  if (btnFullscreenDot) btnFullscreenDot.addEventListener('click', toggleFullscreen);
+
+  if (btnClearDot) {
+    btnClearDot.addEventListener('click', () => {
+      output.innerHTML = '';
+      if (typeof sfx !== 'undefined' && sfx.click) sfx.click();
+    });
+  }
+
+  if (btnMinDot) {
+    btnMinDot.addEventListener('click', () => {
+      output.scrollTo({ top: 0, behavior: 'smooth' });
+      if (typeof sfx !== 'undefined' && sfx.click) sfx.click();
+    });
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && termSection && termSection.classList.contains('is-fullscreen')) {
+      toggleFullscreen();
+    }
+  });
 
   const commands = {
     help: () => `
@@ -944,17 +984,92 @@ Comandos suportados:<br>
 • <strong style="color:#fbbf24">projects</strong>: Resumo dos projetos práticos do portfólio<br>
 • <strong style="color:#fbbf24">skills</strong>: Detalhamento técnico da stack e proficiências<br>
 • <strong style="color:#fbbf24">certs</strong>: Certificações técnicas e badges oficiais (GCP, n8n, LGPD)<br>
-• <strong style="color:#fbbf24">architecture</strong>: Filosofia de desenvolvimento de sistemas e agentes<br>
+• <strong style="color:#fbbf24">top</strong>: Monitor de processos e agentes em tempo real<br>
+• <strong style="color:#fbbf24">cv</strong>: Ficha técnica curricular completa em ASCII<br>
+• <strong style="color:#fbbf24">architecture</strong>: Filosofia de engenharia (Determinismo, Pydantic, Human-in-the-Loop)<br>
+• <strong style="color:#fbbf24">metrics</strong>: Indicadores de engenharia e produção<br>
+• <strong style="color:#fbbf24">traceroute</strong>: Rota de rede simulada para infraestrutura GCP<br>
+• <strong style="color:#fbbf24">recruiter</strong>: Abrir painel executivo Modo Recrutador (⌘R)<br>
+• <strong style="color:#fbbf24">theme</strong>: Alternar modo Matrix / Phosphor Green<br>
 • <strong style="color:#fbbf24">pet</strong>: Detalhes da esteira de visão computacional YOLO<br>
 • <strong style="color:#fbbf24">agents</strong>: Arquitetura multiagente do Home Credit<br>
 • <strong style="color:#fbbf24">exchange</strong>: Stack e endpoints do SENAI Exchange<br>
 • <strong style="color:#fbbf24">legal</strong>: Especificações do agente jurídico e RAG<br>
-• <strong style="color:#fbbf24">metrics</strong>: Indicadores de engenharia e produção<br>
 • <strong style="color:#fbbf24">whoami</strong>: Perfil e foco profissional de Arthur Faria<br>
 • <strong style="color:#fbbf24">contact</strong>: Links diretos e canais de contato<br>
-• <strong style="color:#fbbf24">matrix</strong>: Conectar ao terminal neural<br>
 • <strong style="color:#fbbf24">clear</strong>: Limpa a janela do terminal
     `,
+    top: () => `
+<div style="font-family:var(--mono);font-size:0.72rem;line-height:1.45;color:#38bdf8;margin-bottom:6px">
+[TOP - MONITOR DE PROCESSOS &amp; AGENTES EM TEMPO REAL]
+PID   AGENT / PROCESSO        CPU%   MEM%    LATÊNCIA   STATUS
+1042  agent-concierge (ADK)    1.2   48 MB    124 ms    LISTENING
+1043  spec-bureau (Python)     0.8   62 MB    240 ms    IDLE
+1044  spec-payments (Pandas)   2.4   74 MB    310 ms    PROCESSING
+1045  spec-card (Pydantic)     0.4   44 MB    180 ms    IDLE
+1046  spec-contracts (Schema)  1.1   52 MB    290 ms    IDLE
+2090  yolo-pet-infer (ONNX)    8.7  180 MB   22.8 ms    ACTIVE (30fps)
+3010  pgvector-hnsw (Postgres) 0.6   96 MB    4.2 ms    READY
+</div>
+<span style="color:#10b981">✓ 7 processos ativos. Sistema operando em estado nominal (0 falhas).</span>
+    `,
+    cv: () => `
+<pre style="color:#fbbf24;font-family:var(--mono);font-size:0.72rem;line-height:1.45;margin:0">
+================================================================================
+ARTHUR FARIA E SILVA | ADS &amp; IA APLICADA
+================================================================================
+[FORMAÇÃO]
+• Tecnólogo em Análise e Desenvolvimento de Sistemas — SENAI Gaspar Ricardo Jr. (2026–2027)
+
+[EXPERIÊNCIA]
+• Estagiário em Engenharia de Dados &amp; IA — 2RP Net (2026–Atual)
+  - Demandas de arquitetura de IA: RAG híbrido com pgvector, integração Projuris
+  - Sistemas multiagente com Google ADK, schemas Pydantic e pipelines analíticos
+
+[CERTIFICAÇÕES TÉCNICAS (2025–2026)]
+• Google Cloud: Data Lakes e Data Warehouses no GCP (Badge Oficial, 2026)
+• Google Cloud: Infraestrutura Geral do GCP (Badge Oficial, 2026)
+• Hashtag Treinamentos: Agentes de IA com n8n (2026)
+• SENAI Sorocaba: Lei Geral de Proteção de Dados - LGPD (2025)
+
+[CORE STACK]
+• Python, FastAPI, Google ADK, LangChain, Pydantic, pgvector, BigQuery, Docker, Java/Spring
+
+[CONTATO]
+• LinkedIn: linkedin.com/in/arthur-faria-e-silva-85b04a290/
+• GitHub:   github.com/Arthur-2612
+================================================================================
+</pre>
+<span style="color:#8f98a8">Dica: Você também pode abrir a ficha executiva com o comando <strong style="color:#fbbf24">recruiter</strong> ou pressionando o botão <strong style="color:#fbbf24">⌘R</strong>.</span>
+    `,
+    resume: () => commands.cv(),
+    curriculo: () => commands.cv(),
+    traceroute: () => `
+<pre style="color:#34d399;font-family:var(--mono);font-size:0.72rem;line-height:1.4;margin:0">
+traceroute to southamerica-east1.gcp.internal (10.128.0.1), 30 hops max:
+ 1  gateway.local (192.168.1.1)                   0.612 ms
+ 2  sp-sorocaba-edge01.isp.net (177.x.x.x)        2.431 ms
+ 3  as15169.google.com (108.170.245.x)            5.842 ms
+ 4  gcp-vpc-peering.southamerica-east1.internal   7.190 ms
+ 5  bigquery-service.sa-east1.internal            8.240 ms
+</pre>
+<span style="color:#10b981">✓ Conexão de baixa latência estabelecida com região GCP São Paulo (8.24ms).</span>
+    `,
+    theme: () => {
+      if (!termSection) return '';
+      const isMatrix = termSection.classList.toggle('theme-matrix');
+      if (typeof sfx !== 'undefined' && sfx.pop) sfx.pop();
+      return isMatrix ?
+        '<span style="color:#10b981">● Tema Terminal Matrix (Phosphor Green) ATIVADO.</span>' :
+        '<span style="color:#fbbf24">● Tema Obsidian Amber restaurado.</span>';
+    },
+    recruiter: () => {
+      if (typeof window.openRecruiterDrawer === 'function') {
+        window.openRecruiterDrawer();
+        return '<span style="color:#fbbf24">⚡ Modo Recrutador / Resumo Executivo acionado.</span>';
+      }
+      return '<span style="color:#fbbf24">⚡ Modo Recrutador indisponível.</span>';
+    },
     skills: () => `
 <strong style="color:#fbbf24">CORE STACK &amp; FERRAMENTAS:</strong><br>
 [IA &amp; Agentes]     Python, LangChain, Google ADK, LangGraph, Prompt Engineering<br>
@@ -1050,17 +1165,7 @@ Foco: Conectar dados corporativos, modelos de linguagem e engenharia de software
 • <strong>Geração Documental:</strong> Minuta preliminar DOCX editável gerada via python-docx<br>
 • <strong>Governança:</strong> Human-in-the-Loop obrigatório (revisão e validação final do advogado).
     `,
-    matrix: () => `
-<pre style="color:#10b981;font-family:monospace;font-size:0.75rem;margin:0;line-height:1.2">
-01000001 01110010 01110100 01101000 01110101 01110010
- [ ARTHUR FARIA - ENGENHARIA DE DADOS & IA APLICADA ]
-  ▲   ┌─────────┐   ▲   ┌──────────┐   ▲   ┌──────────┐
-  │   │  YOLO   │   │   │  AGENTS  │   │   │   RAG    │
-  │   │ INSPEC  │   │   │   ADK    │   │   │ PGVECTOR │
-  ┴   └─────────┘   ┴   └──────────┘   ┴   └──────────┘
-</pre>
-<span style="color:#10b981">Conexão neural ativa. Todos os sistemas operando normalmente.</span>
-    `,
+    matrix: () => commands.theme(),
     clear: () => null
   };
 
@@ -1070,6 +1175,7 @@ Foco: Conectar dados corporativos, modelos de linguagem e engenharia de software
 
     if (cmd === 'clear') {
       output.innerHTML = '';
+      if (typeof sfx !== 'undefined' && sfx.click) sfx.click();
       return;
     }
 
@@ -1089,6 +1195,8 @@ Foco: Conectar dados corporativos, modelos de linguagem e engenharia de software
 
     output.appendChild(outBox);
     output.scrollTop = output.scrollHeight;
+
+    if (typeof sfx !== 'undefined' && sfx.pop) sfx.pop();
   }
 
   function escapeHtml(str) {
@@ -1342,6 +1450,41 @@ function initCommandPalette() {
         if (btn) btn.click();
         const el = document.getElementById('projetos');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'DESTAQUES & RECURSOS',
+      id: 'cmd_recruiter',
+      title: 'Abrir Modo Recrutador / Resumo Executivo (⌘R)',
+      desc: 'Ficha executiva completa com perfil, stack, projetos e certificações',
+      badge: 'Executivo',
+      keywords: 'recrutador recruiter resumo curriculo cv fast track perfil vaga estagio',
+      run: () => {
+        if (typeof window.openRecruiterDrawer === 'function') window.openRecruiterDrawer();
+      }
+    },
+    {
+      group: 'DESTAQUES & RECURSOS',
+      id: 'cmd_rag_sim',
+      title: 'Simulador RAG: pgvector vs SQL LIKE',
+      desc: 'Demonstração prática de busca vetorial semântica vs consulta tradicional',
+      badge: 'Simulador',
+      keywords: 'rag simulador pgvector busca vetorial semantica cosseno like',
+      run: () => {
+        const card = document.querySelector('.rag-sandbox-card');
+        if (card) card.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'COMANDOS & UTILIDADES',
+      id: 'cmd_term_fs',
+      title: 'Terminal: Alternar Modo Tela Cheia',
+      desc: 'Expandir o console de engenharia em tela cheia',
+      badge: 'CLI',
+      keywords: 'terminal tela cheia fullscreen expandir maximizar',
+      run: () => {
+        const fsBtn = document.getElementById('terminal-fullscreen-btn');
+        if (fsBtn) fsBtn.click();
       }
     },
     {
@@ -1672,3 +1815,155 @@ function initCertificationsFilter() {
   });
 }
 initCertificationsFilter();
+
+
+/* Interactive pgvector RAG Sandbox */
+function initRagSandbox() {
+  const presetBtns = document.querySelectorAll('.rag-preset-btn');
+  if (!presetBtns.length) return;
+
+  const simScoreEl = document.getElementById('rag-sim-score');
+  const vectorPreviewEl = document.getElementById('rag-vector-preview');
+  const clauseTagEl = document.getElementById('rag-clause-tag');
+  const clauseContentEl = document.getElementById('rag-clause-content');
+  const pgVerdictEl = document.getElementById('rag-pg-verdict');
+  const sqlQueryEl = document.getElementById('rag-sql-query');
+  const sqlEmptyCard = document.querySelector('.rag-clause-card.sql-empty small');
+
+  const presets = {
+    multa: {
+      score: 'Similaridade: 0.941 (Alta relevância)',
+      vector: '[+0.182, -0.419, +0.884, -0.012, +0.305, ...]',
+      tag: 'CLÁUSULA 8ª · RESCISÃO IMOTIVADA & PENALIDADES',
+      content: '"Na hipótese de término unilateral prematuro sem justa causa, incidirá indenização compensatória no percentual de 20% (vinte por cento) das parcelas vincendas até o término do período avençado."',
+      verdict: '✓ Match semântico identificado: o modelo associou "cancelamento" à "rescisão imotivada", recuperando o contexto jurídico exato.',
+      sql: "SELECT * FROM clausulas WHERE texto ILIKE '%cancelamento%';",
+      sqlExplain: 'A busca tradicional falhou porque a palavra exata "cancelamento" não consta no texto do contrato (que utiliza a expressão "término unilateral prematuro").'
+    },
+    vigencia: {
+      score: 'Similaridade: 0.918 (Alta relevância)',
+      vector: '[+0.342, +0.108, -0.715, +0.229, -0.094, ...]',
+      tag: 'CLÁUSULA 3ª · PRAZO DE EXECUÇÃO & PRORROGAÇÃO',
+      content: '"O presente instrumento vigerá pelo prazo improrrogável de 12 (doze) meses, facultada a celebração de termo aditivo mediante anuência expressa com antecedência mínima de 30 dias."',
+      verdict: '✓ Match semântico identificado: associação direta entre "renovação" e "celebração de termo aditivo mediante anuência expressa".',
+      sql: "SELECT * FROM clausulas WHERE texto ILIKE '%renovação%';",
+      sqlExplain: 'Zero registros encontrados no SQL LIKE. O texto formal utiliza "celebração de termo aditivo", termo ausente na consulta por palavra-chave literal.'
+    },
+    reajuste: {
+      score: 'Similaridade: 0.935 (Alta relevância)',
+      vector: '[-0.201, +0.554, +0.630, -0.411, +0.178, ...]',
+      tag: 'CLÁUSULA 5ª · PREÇO E ATUALIZAÇÃO MONETÁRIA',
+      content: '"Os valores contratados serão corrigidos a cada 12 (doze) meses de vigência com base na variação positiva acumulada do IPCA/IBGE ocorrida no período correspondente."',
+      verdict: '✓ Match semântico identificado: mapeamento entre "inflação" e o indexador formal "variação positiva acumulada do IPCA/IBGE".',
+      sql: "SELECT * FROM clausulas WHERE texto ILIKE '%inflação%';",
+      sqlExplain: 'Busca sem retorno. A palavra "inflação" não ocorre de forma literal no texto legal (o contrato cita apenas a sigla "IPCA/IBGE").'
+    },
+    foro: {
+      score: 'Similaridade: 0.952 (Alta relevância)',
+      vector: '[+0.074, -0.682, +0.449, +0.512, -0.320, ...]',
+      tag: 'CLÁUSULA 14ª · ELEIÇÃO DE FORO E DISPUTAS',
+      content: '"Para dirimir quaisquer controvérsias decorrentes deste contrato, as partes elegem o Foro da Comarca de Sorocaba/SP, com expressa renúncia a qualquer outro, por mais privilegiado que seja."',
+      verdict: '✓ Match semântico identificado: o modelo conectou "conflitos" à expressão jurídica formal "dirimir quaisquer controvérsias".',
+      sql: "SELECT * FROM clausulas WHERE texto ILIKE '%conflitos%';",
+      sqlExplain: 'Busca vazia: "conflitos" não foi encontrado pelo SQL LIKE. O texto formal emprega o termo "controvérsias".'
+    }
+  };
+
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.getAttribute('data-rag-query');
+      const data = presets[key];
+      if (!data) return;
+
+      presetBtns.forEach(b => {
+        const active = b === btn;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+
+      if (simScoreEl) simScoreEl.textContent = data.score;
+      if (vectorPreviewEl) vectorPreviewEl.textContent = data.vector;
+      if (clauseTagEl) clauseTagEl.textContent = data.tag;
+      if (clauseContentEl) clauseContentEl.textContent = data.content;
+      if (pgVerdictEl) pgVerdictEl.textContent = data.verdict;
+      if (sqlQueryEl) sqlQueryEl.textContent = data.sql;
+      if (sqlEmptyCard) sqlEmptyCard.textContent = data.sqlExplain;
+
+      if (typeof sfx !== 'undefined' && sfx.pop) sfx.pop();
+    });
+  });
+}
+initRagSandbox();
+
+/* Recruiter Fast-Track / Executive Summary Drawer */
+function initRecruiterDrawer() {
+  const drawer = document.getElementById('recruiter-drawer');
+  const openPillBtn = document.getElementById('open-recruiter-drawer');
+  const openHeaderBtn = document.getElementById('header-open-recruiter');
+  const closeBtn = document.getElementById('close-recruiter-drawer');
+  const copyContactBtn = document.getElementById('drawer-copy-contact');
+  const printBtn = document.getElementById('drawer-print-btn');
+
+  if (!drawer) return;
+
+  function openDrawer() {
+    drawer.showModal();
+    if (typeof sfx !== 'undefined' && sfx.modalOpen) sfx.modalOpen();
+  }
+
+  function closeDrawer() {
+    drawer.close();
+    if (typeof sfx !== 'undefined' && sfx.modalClose) sfx.modalClose();
+  }
+
+  if (openPillBtn) openPillBtn.addEventListener('click', openDrawer);
+  if (openHeaderBtn) openHeaderBtn.addEventListener('click', openDrawer);
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+
+  drawer.addEventListener('click', e => {
+    if (e.target === drawer) closeDrawer();
+  });
+
+  if (copyContactBtn) {
+    copyContactBtn.addEventListener('click', async () => {
+      const url = 'https://www.linkedin.com/in/arthur-faria-e-silva-85b04a290/';
+      try {
+        await navigator.clipboard.writeText(url);
+        const originalText = copyContactBtn.textContent;
+        copyContactBtn.textContent = 'Link copiado! ✓';
+        copyContactBtn.style.color = '#10b981';
+        if (typeof sfx !== 'undefined' && sfx.success) sfx.success();
+        setTimeout(() => {
+          copyContactBtn.textContent = originalText;
+          copyContactBtn.style.color = '';
+        }, 2500);
+      } catch {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    });
+  }
+
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      if (typeof sfx !== 'undefined' && sfx.click) sfx.click();
+      window.print();
+    });
+  }
+
+  document.addEventListener('keydown', e => {
+    const isCmdR = (e.metaKey || e.ctrlKey || e.altKey) && e.key.toLowerCase() === 'r';
+    const tag = document.activeElement ? document.activeElement.tagName : '';
+    const isEditing = ['INPUT', 'TEXTAREA'].includes(tag);
+
+    if (isCmdR && !isEditing) {
+      if (e.altKey || (e.ctrlKey && e.shiftKey) || e.metaKey) {
+        e.preventDefault();
+        if (drawer.open) closeDrawer();
+        else openDrawer();
+      }
+    }
+  });
+
+  window.openRecruiterDrawer = openDrawer;
+}
+initRecruiterDrawer();
