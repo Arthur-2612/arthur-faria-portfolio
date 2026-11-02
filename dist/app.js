@@ -155,6 +155,7 @@ function activateTab(tab, focus = false) {
     document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
     if (!selected) document.getElementById(item.getAttribute('aria-controls')).querySelectorAll('video').forEach(video => video.pause());
   });
+  if (typeof sfx !== 'undefined' && sfx.click) sfx.click();
   if (focus) tab.focus();
 }
 $$('[role="tablist"]').forEach(list => {
@@ -828,8 +829,9 @@ function initHeroTypewriter() {
   const words = [
     'Sistemas Multiagentes',
     'Arquiteturas RAG & pgvector',
+    'Cloud & Data Lakes no GCP',
+    'Agentes de IA com n8n',
     'IA Aplicada & Engenharia de Dados',
-
     'Integração de Modelos a Sistemas'
   ];
   let wordIndex = 0;
@@ -941,6 +943,7 @@ function initEngineeringTerminal() {
 Comandos suportados:<br>
 • <strong style="color:#fbbf24">projects</strong>: Resumo dos projetos práticos do portfólio<br>
 • <strong style="color:#fbbf24">skills</strong>: Detalhamento técnico da stack e proficiências<br>
+• <strong style="color:#fbbf24">certs</strong>: Certificações técnicas e badges oficiais (GCP, n8n, LGPD)<br>
 • <strong style="color:#fbbf24">architecture</strong>: Filosofia de desenvolvimento de sistemas e agentes<br>
 • <strong style="color:#fbbf24">pet</strong>: Detalhes da esteira de visão computacional YOLO<br>
 • <strong style="color:#fbbf24">agents</strong>: Arquitetura multiagente do Home Credit<br>
@@ -960,6 +963,29 @@ Comandos suportados:<br>
 [Eng. de Dados]   Pandas, PySpark, Data Pipelines, Extração/OCR<br>
 [DevOps &amp; Cloud]  Docker, Git, Google Cloud Platform (GCP), Linux
     `,
+    certs: () => `
+<strong style="color:#fbbf24">CERTIFICAÇÕES TÉCNICAS &amp; BADGES OFICIAIS:</strong><br>
+1. <strong>Google Cloud — Data Lakes e Data Warehouses no GCP</strong> [2026]<br>
+   • Emissor: Google Cloud | Badge de conclusão oficial<br>
+   • Foco: BigQuery, Data Lakes analíticos, particionamento e pipelines escaláveis.<br>
+<br>
+2. <strong>Google Cloud — Infraestrutura Geral do GCP</strong> [2026]<br>
+   • Emissor: Google Cloud | Badge de conclusão oficial<br>
+   • Foco: Compute Engine, VPC &amp; Redes, IAM Security, Storage &amp; Governança Cloud.<br>
+<br>
+3. <strong>Agentes de IA com n8n</strong> [2026]<br>
+   • Emissor: Hashtag Treinamentos<br>
+   • Foco: Orquestração de Agentes com LangChain no n8n, Webhooks, APIs e memória de contexto.<br>
+<br>
+4. <strong>Lei Geral de Proteção de Dados (LGPD)</strong> [2025]<br>
+   • Emissor: SENAI Sorocaba<br>
+   • Foco: Conformidade regulatória (Lei nº 13.709/2018), Privacy by Design e governança de dados.<br>
+<br>
+<span style="color:#8f98a8">Dica: Visualize os cards interativos na aba <strong style="color:#fbbf24">03: Certificações</strong> da seção Trajetória.</span>
+    `,
+    certifications: () => commands.certs(),
+    certificados: () => commands.certs(),
+    badges: () => commands.certs(),
     architecture: () => `
 <strong style="color:#fbbf24">FILOSOFIA DE ARQUITETURA DE IA &amp; SOFTWARE:</strong><br>
 1. <strong>Determinismo com Pydantic:</strong> LLMs geram saídas tipadas e validadas por esquemas estritos, sem alucinações de formato.<br>
@@ -1241,6 +1267,20 @@ function initCommandPalette() {
     },
     {
       group: 'NAVEGAÇÃO RÁPIDA',
+      id: 'nav_certs',
+      title: 'Certificações & Badges Oficiais',
+      desc: 'Google Cloud (2), Agentes de IA com n8n e Governança LGPD',
+      badge: 'Badges',
+      keywords: 'certificacoes certs badges google cloud gcp n8n hashtag senai lgpd',
+      run: () => {
+        const tab = document.getElementById('career-tab-certs');
+        if (tab) tab.click();
+        const el = document.getElementById('trajetoria');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'NAVEGAÇÃO RÁPIDA',
       id: 'nav_conectar',
       title: 'Contato & Redes',
       desc: 'LinkedIn, GitHub e canais para contato profissional',
@@ -1330,6 +1370,71 @@ function initCommandPalette() {
       badge: 'CLI',
       keywords: 'metrics metricas indicadores benchmarks terminal',
       run: () => runTerminalCmd('metrics')
+    },
+    {
+      group: 'COMANDOS & UTILIDADES',
+      id: 'cmd_certs',
+      title: 'Executar: certs no Terminal',
+      desc: 'Listar certificações oficiais e badges (GCP, n8n, LGPD)',
+      badge: 'CLI',
+      keywords: 'certs certificacoes badges gcp cloud n8n lgpd terminal',
+      run: () => runTerminalCmd('certs')
+    },
+    {
+      group: 'CERTIFICAÇÕES & BADGES',
+      id: 'cert_gcp_datalake',
+      title: 'GCP: Data Lakes e Data Warehouses (2026)',
+      desc: 'Badge de conclusão oficial do Google Cloud · BigQuery e Pipelines',
+      badge: 'Google Cloud',
+      keywords: 'google cloud gcp data lakes data warehouses bigquery badge 2026',
+      run: () => {
+        const tab = document.getElementById('career-tab-certs');
+        if (tab) tab.click();
+        const el = document.getElementById('trajetoria');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'CERTIFICAÇÕES & BADGES',
+      id: 'cert_gcp_infra',
+      title: 'GCP: Infraestrutura Geral do GCP (2026)',
+      desc: 'Badge oficial Google Cloud · Compute Engine, VPC e IAM Security',
+      badge: 'Google Cloud',
+      keywords: 'google cloud gcp infraestrutura compute engine vpc redes iam 2026',
+      run: () => {
+        const tab = document.getElementById('career-tab-certs');
+        if (tab) tab.click();
+        const el = document.getElementById('trajetoria');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'CERTIFICAÇÕES & BADGES',
+      id: 'cert_n8n',
+      title: 'Agentes de IA com n8n · Hashtag (2026)',
+      desc: 'Orquestração de Agentes com LangChain, Webhooks e APIs',
+      badge: 'Agentes IA',
+      keywords: 'agentes ia n8n hashtag treinamentos langchain automacao 2026',
+      run: () => {
+        const tab = document.getElementById('career-tab-certs');
+        if (tab) tab.click();
+        const el = document.getElementById('trajetoria');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'CERTIFICAÇÕES & BADGES',
+      id: 'cert_lgpd',
+      title: 'Lei Geral de Proteção de Dados - LGPD (2025)',
+      desc: 'SENAI Sorocaba · Conformidade, privacidade e Privacy by Design',
+      badge: 'Governança',
+      keywords: 'lgpd lei geral de protecao de dados senai privacidade compliance 2025',
+      run: () => {
+        const tab = document.getElementById('career-tab-certs');
+        if (tab) tab.click();
+        const el = document.getElementById('trajetoria');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
     },
     {
       group: 'COMANDOS & UTILIDADES',
@@ -1540,3 +1645,30 @@ function initTechTagHighlight() {
   });
 }
 initTechTagHighlight();
+
+/* Interactive Certifications Filter */
+function initCertificationsFilter() {
+  const filterBtns = document.querySelectorAll('.cert-filter-pill');
+  const cards = document.querySelectorAll('.cert-card');
+  if (!filterBtns.length || !cards.length) return;
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.getAttribute('data-cert-filter');
+      filterBtns.forEach(b => {
+        const isActive = b === btn;
+        b.classList.toggle('active', isActive);
+        b.setAttribute('aria-pressed', String(isActive));
+      });
+
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        const show = filter === 'all' || cat === filter;
+        card.style.display = show ? 'flex' : 'none';
+      });
+
+      if (typeof sfx !== 'undefined' && sfx.click) sfx.click();
+    });
+  });
+}
+initCertificationsFilter();

@@ -35,3 +35,13 @@ Fonte: PDF enviado por Arthur, “IAD-Documentação_ Agente Jurídico - Automa�
 O resumo usa o texto revisado: FastAPI BackgroundTasks, extração PDF/DOCX e OCR local, chunks com metadados e hash, embeddings, PostgreSQL/pgvector no RDS, RAG filtrado por contrato, Llama 3.1 8B, validações Python, geração DOCX e anexação SOAP GED. A figura na seção 6 do PDF ainda representa uma arquitetura anterior com Redis/Langfuse. Para resolver essa divergência, a figura não foi reproduzida; a visualização HTML segue o texto revisado. O caso atual tem um agente geral com ferramentas modulares; uma arquitetura multiagente jurídica consta apenas como evolução futura no PDF.
 
 Critérios de avaliação são apresentados como previstos. Não foram publicados números de precisão, alegações de economia de horas, custos estimados, volumes corporativos, nomes do cliente ou de colegas, endpoints, credenciais ou documentos contratuais. O PDF integral não foi incluído nos arquivos servidos pelo site. A revisão jurídica é obrigatória; DocuSign depende de comando posterior do advogado. A seção fica na experiência e não adiciona um quarto projeto à seleção principal.
+
+## Certificações e Badges Técnicos
+
+Em 2026, Arthur informou as seguintes certificações e badges oficiais para inclusão no portfólio:
+1. **Google Cloud — Data Lakes e Data Warehouses no GCP | Badge de conclusão (2026)**
+2. **Google Cloud — Infraestrutura Geral do GCP | Badge de conclusão (2026)**
+3. **Agentes de IA com n8n | Hashtag Treinamentos (2026)**
+4. **Lei Geral de Proteção de Dados (LGPD) | SENAI Sorocaba (2025)**
+
+Essas qualificações foram integradas como aba dedicada na seção de experiência/formação (`#trajetoria`), no console interativo (`certs`), na paleta de comandos (`Ctrl+K`) e nas métricas de destaque do portfólio, com link direto para verificação na página de certificações do LinkedIn. Não foram inventadas datas nem emissores adicionais além do fornecido pelo usuário.
