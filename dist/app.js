@@ -198,8 +198,8 @@ const projects = {
     summary: 'Dados do Home Credit, ferramentas Python e agentes especializados trabalhando juntos para organizar uma análise.',
     tags: ['Python', 'Google ADK', 'Pandas', 'BigQuery', 'Pydantic'],
     demo: {
-      src: '/assets/demos/home-credit.mp4',
-      poster: '/assets/demos/home-credit.jpg',
+      src: './assets/demos/home-credit.mp4',
+      poster: './assets/demos/home-credit.jpg',
       duration: '3min29s',
       description: 'Veja a orquestração dos agentes no Google ADK em uma gravação do projeto.',
       source: 'https://www.linkedin.com/feed/update/urn:li:activity:7493019795823476736/'
@@ -222,8 +222,8 @@ const projects = {
     summary: 'Uma plataforma de troca de itens para a comunidade de alunos do SENAI, desenvolvida em equipe na faculdade.',
     tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Docker', 'HTML / CSS / JavaScript'],
     demo: {
-      src: '/assets/demos/senai-exchange.mp4',
-      poster: '/assets/demos/senai-exchange.jpg',
+      src: './assets/demos/senai-exchange.mp4',
+      poster: './assets/demos/senai-exchange.jpg',
       duration: '1min31s',
       description: 'Acompanhe a navegação pelo SENAI Exchange e veja a plataforma em funcionamento.',
       source: 'https://www.linkedin.com/feed/update/urn:li:activity:7473764030248120320/'
@@ -995,7 +995,7 @@ Comandos suportados:<br>
 • <strong style="color:#fbbf24">agents</strong>: Arquitetura multiagente do Home Credit<br>
 • <strong style="color:#fbbf24">exchange</strong>: Stack e endpoints do SENAI Exchange<br>
 • <strong style="color:#fbbf24">legal</strong>: Especificações do agente jurídico e RAG<br>
-• <strong style="color:#fbbf24">whoami</strong>: Perfil e foco profissional de Arthur Faria<br>
+• <strong style="color:#fbbf24">whoami</strong>: Perfil e foco profissional de Arthur Faria e Silva<br>
 • <strong style="color:#fbbf24">contact</strong>: Links diretos e canais de contato<br>
 • <strong style="color:#fbbf24">clear</strong>: Limpa a janela do terminal
     `,

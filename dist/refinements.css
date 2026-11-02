@@ -1371,3 +1371,32 @@ body.terminal-open-fullscreen {
   .drawer-content{padding:16px}
   .drawer-metrics-row{grid-template-columns:1fr;gap:6px}
 }
+
+/* Typography tuning for full name: Arthur Faria e Silva */
+#hero-title {
+  font-size: clamp(3.2rem, 5.6vw, 5.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+#hero-title span {
+  display: inline-block;
+}
+@media(max-width: 900px) {
+  #hero-title {
+    font-size: clamp(2.8rem, 7vw, 4.2rem);
+  }
+}
+@media(max-width: 620px) {
+  #hero-title {
+    font-size: clamp(2.25rem, 9.8vw, 3.2rem);
+    line-height: 1.04;
+  }
+  .brand {
+    font-size: 0.85rem;
+    gap: 9px;
+  }
+  .brand-mark {
+    font-size: 1.45rem;
+  }
+}
+

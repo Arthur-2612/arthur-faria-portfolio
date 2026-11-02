@@ -1,4 +1,4 @@
-# Portfólio de Arthur Faria — código completo
+# Portfólio de Arthur Faria e Silva — código completo
 
 Site estático feito em HTML, CSS e JavaScript, sem etapa de compilação e sem dependências de npm.
 
@@ -24,7 +24,7 @@ python3 -m http.server 8080 --bind 127.0.0.1 --directory dist
 5. Abra http://127.0.0.1:8080 no navegador.
 6. Para encerrar o servidor, pressione Ctrl+C no terminal.
 
-O servidor local é necessário porque os caminhos das imagens, vídeos, CSS e JavaScript começam em `/`. Abrir o HTML por duplo clique pode deixar esses recursos sem carregar. O comando acima serve a pasta correta e só aceita conexões do próprio computador.
+Você também pode abrir o arquivo `index.html` diretamente dando duplo clique nele, ou rodar o servidor local indicado acima.
 
 ## Onde editar
 
