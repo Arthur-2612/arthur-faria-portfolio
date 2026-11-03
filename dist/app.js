@@ -181,22 +181,22 @@ $$('[role="tablist"]').forEach(list => {
 
 const projects = {
   legal: {
-    category: 'EXPERIÊNCIA NA 2RP NET / IA APLICADA AO JURÍDICO',
-    title: 'Agente jurídico para termos aditivos',
-    summary: 'Integração com o Projuris, recuperação de histórico com RAG e geração de minutas preliminares em DOCX, com revisão jurídica humana.',
-    tags: ['Python', 'FastAPI', 'Projuris', 'RAG', 'pgvector', 'python-docx'],
+    category: 'EXPERIÊNCIA NA 2RP NET / ESTÁGIO EM DATA & AI',
+    title: 'Agente de IA para minutas contratuais',
+    summary: 'Automatização da análise e elaboração de minutas de termos aditivos para cliente financeiro, com integração Projuris e RAG com pgvector.',
+    tags: ['Python', 'FastAPI', 'Projuris', 'RAG', 'PostgreSQL', 'pgvector', 'Docker', 'Kubernetes'],
     contextLabel: 'Especificações',
     learningLabel: 'Qualidade',
-    context: `<p class="case-note"><strong>Em desenvolvimento.</strong> Este caso apresenta o escopo e a arquitetura documentados da solução.</p><h3>O problema</h3><p>A elaboração de um termo aditivo exige comparar o contrato vigente, a nova proposta e os aditivos anteriores. O agente busca esse contexto e apoia a redação de uma minuta preliminar editável.</p><h3>Minha participação</h3><p>Atuei principalmente na <strong>integração com o Projuris</strong> e na <strong>geração das minutas</strong>, em um projeto desenvolvido em equipe.</p><dl class="spec-list"><div><dt>Integração</dt><dd>Conexão com requisições, metadados e documentos do Projuris, incluindo o retorno da minuta à requisição.</dd></div><div><dt>Geração documental</dt><dd>Produção da minuta preliminar em DOCX com python-docx, a partir do contexto do contrato e das alterações solicitadas.</dd></div><div><dt>Entradas</dt><dd>Requisição, contrato vigente, proposta de alteração e histórico de aditivos.</dd></div><div><dt>Saída prevista</dt><dd>Minuta editável anexada no Projuris e informações de auditoria para conferência.</dd></div><div><dt>Revisão</dt><dd>A análise, a aprovação e a decisão jurídica permanecem com o advogado responsável.</dd></div></dl>`,
-    learning: `<h3>Como a qualidade será avaliada</h3><p>Os itens abaixo são critérios previstos na documentação. Não representam resultados de produção ou ganhos já comprovados.</p><dl class="spec-list"><div><dt>Extração e OCR</dt><dd>CER e WER em amostras com referência, além da conferência de datas, valores e campos críticos.</dd></div><div><dt>Recuperação RAG</dt><dd>Precision@K e Recall@K para avaliar se os trechos recuperados correspondem ao contexto contratual necessário.</dd></div><div><dt>Redação</dt><dd>Comparação com casos de referência homologados pelo jurídico e revisão humana das minutas.</dd></div><div><dt>Rastreabilidade</dt><dd>Referências aos documentos e às cláusulas utilizadas; identificação da execução e registro de status.</dd></div><div><dt>Operação</dt><dd>Acompanhamento de latência, falhas, uso do modelo e acionamento de contingência.</dd></div></dl><p class="case-note">A revisão jurídica humana é obrigatória. A automação não aprova contratos nem substitui o parecer do advogado.</p>`,
-    architectureNote: 'Resumo baseado no texto revisado da documentação, de 30/10/2026. A arquitetura descreve um agente geral com ferramentas modulares e duas esteiras de processamento.',
+    context: `<p class="case-note"><strong>Em desenvolvimento na 2RP Net.</strong> Solução de IA para elaboração e análise de termos aditivos contratuais para cliente do setor financeiro.</p><h3>O escopo da solução</h3><p>A elaboração de um termo aditivo contratual requer a comparação detalhada entre o contrato vigente, a proposta de alteração e o histórico de aditivos anteriores. O agente automatiza a recuperação contextual e apoia a redação de uma minuta preliminar editável.</p><h3>Minha atuação no projeto</h3><dl class="spec-list"><div><dt>Integração Projuris</dt><dd>Implementação da integração com a plataforma de gestão jurídica Projuris para consulta e ingestão de documentos a serem processados.</dd></div><div><dt>RAG com pgvector</dt><dd>Desenvolvimento dos mecanismos de RAG com PostgreSQL e pgvector para recuperação de informações relevantes ao contexto da minuta.</dd></div><div><dt>Testes e Avaliação</dt><dd>Implementação de testes e avaliação contínua da qualidade dos documentos processados, validando precisão e conformidade.</dd></div><div><dt>Revisão Obrigatória</dt><dd>Arquitetura orientada a Human-in-the-Loop: a validação e homologação jurídica permanecem obrigatórias para o advogado responsável.</dd></div></dl>`,
+    learning: `<h3>Como a qualidade é avaliada</h3><p>Critérios técnicos e métricas contínuas para validação da solução:</p><dl class="spec-list"><div><dt>Extração e OCR</dt><dd>CER e WER em amostras com referência, além da conferência de datas, valores e campos críticos.</dd></div><div><dt>Recuperação RAG</dt><dd>Precision@K e Recall@K para avaliar se os trechos recuperados correspondem ao contexto contratual necessário.</dd></div><div><dt>Redação</dt><dd>Comparação com casos de referência homologados pelo jurídico e revisão humana das minutas.</dd></div><div><dt>Rastreabilidade</dt><dd>Referências aos documentos e às cláusulas utilizadas; identificação da execução e registro de status.</dd></div><div><dt>Operação</dt><dd>Acompanhamento de latência, falhas, uso do modelo e contingência.</dd></div></dl><p class="case-note">A revisão jurídica humana é obrigatória. A automação não aprova contratos nem substitui o parecer do advogado.</p>`,
+    architectureNote: 'Arquitetura corporativa na nuvem com ingestão assíncrona, orquestração de ferramentas modulares, Docker e Kubernetes.',
     source: null
   },
   agents: {
-    category: 'DADOS & IA / PROJETO DE ESTÁGIO',
-    title: 'Agentes para análise de crédito',
-    summary: 'Dados do Home Credit, ferramentas Python e agentes especializados trabalhando juntos para organizar uma análise.',
-    tags: ['Python', 'Google ADK', 'Pandas', 'BigQuery', 'Pydantic'],
+    category: 'DADOS & IA / SISTEMA MULTIAGENTE',
+    title: 'Agentes de IA para Análise de Crédito – Home Credit',
+    summary: 'Arquitetura multiagentes com orquestrador Concierge e 4 especialistas delegados. Validação com mais de 30 testes e schemas Pydantic.',
+    tags: ['Python', 'Google ADK', 'Pandas', 'Pydantic', 'BigQuery'],
     demo: {
       src: './assets/demos/home-credit.mp4',
       poster: './assets/demos/home-credit.jpg',
@@ -204,23 +204,23 @@ const projects = {
       description: 'Veja a orquestração dos agentes no Google ADK em uma gravação do projeto.',
       source: 'https://www.linkedin.com/feed/update/urn:li:activity:7493019795823476736/'
     },
-    context: '<h3>O problema</h3><p>As informações de um cliente estão distribuídas em sete tabelas do Home Credit. O projeto reúne esse contexto para responder perguntas sobre bureau, pagamentos, cartão e contratos.</p><h3>O que construímos</h3><p>Um sistema com um agente Concierge e quatro especialistas. As ferramentas Python processam os indicadores e o resultado é reunido em um relatório JSON estruturado.</p><p class="case-note">Desenvolvido em equipe durante o estágio na 2RP Net. A arquitetura, a equipe e as instruções de execução estão documentadas no repositório.</p>',
+    context: '<h3>O problema</h3><p>As informações de um cliente estão distribuídas em sete tabelas do Home Credit. O projeto organiza esse contexto para responder perguntas sobre bureau, pagamentos, cartão e contratos.</p><h3>O que desenvolvi</h3><p>Desenvolvimento do subagente <strong>Bureau</strong>, responsável pela análise de informações do histórico de crédito externo dos clientes, integrado ao agente <strong>Concierge</strong> (orquestrador).</p><p>A solução conta com uma arquitetura multiagentes composta por 1 orquestrador e 4 agentes especialistas: <strong>Bureau, Pagamentos, Cartão e Contratos</strong>. Os resultados são estruturados em JSON via Pydantic e foram executados <strong>mais de 30 testes</strong> para validação do funcionamento e integração dos agentes.</p><p class="case-note">Desenvolvido em equipe durante o estágio na 2RP Net. A arquitetura, a equipe e as instruções de execução estão documentadas no repositório.</p>',
     flow: [
       ['Pergunta + cliente', 'O Concierge recebe a pergunta e o identificador do cliente.'],
       ['Delegação semântica', 'O ADK aciona os especialistas conforme o contexto.'],
       ['Ferramentas Python', 'Joins, agregações e cálculos sobre as tabelas relacionadas.'],
-      ['Relatório JSON', 'Consolidação dos indicadores e da narrativa analítica.']
+      ['Relatório JSON', 'Consolidação dos indicadores em schemas Pydantic validados com +30 testes.']
     ],
     architectureNote: 'A documentação inclui o mapeamento dos joins para BigQuery. As ferramentas de análise processam dados com Python e Pandas.',
-    learning: '<h3>O que esse projeto me ajudou a entender</h3><ul><li>As relações entre tabelas precisam estar claras antes de construir uma análise.</li><li>Separar o cálculo dos indicadores da interpretação do modelo torna o fluxo mais organizado.</li><li>Contratos de saída estruturados ajudam a integrar as respostas dos especialistas.</li><li>Ausência de dados também precisa ter um tratamento explícito.</li></ul><p class="case-note">A experiência faz parte da minha formação em dados e IA aplicada. O repositório reúne a arquitetura, a equipe e as instruções de execução.</p>',
+    learning: '<h3>O que esse projeto me ajudou a entender</h3><ul><li>Desenvolvimento de subagentes com papéis bem delimitados (subagente Bureau com histórico externo).</li><li>Separar o cálculo dos indicadores da interpretação do modelo torna o fluxo determinístico.</li><li>Contratos de saída estruturados em JSON via Pydantic garantem consistência entre agentes.</li><li>Execução de mais de 30 testes automatizados para assegurar a conformidade da orquestração.</li></ul><p class="case-note">A experiência faz parte da minha formação em dados e IA aplicada. O repositório reúne a arquitetura, a equipe e as instruções de execução.</p>',
     source: 'https://github.com/Arthur-2612/multi-agent-system-synapse',
     sourceLabel: 'Código e documentação ↗'
   },
   exchange: {
-    category: 'SISTEMAS / PROJETO INTEGRADOR DE ADS',
-    title: 'SENAI Exchange',
-    summary: 'Uma plataforma de troca de itens para a comunidade de alunos do SENAI, desenvolvida em equipe na faculdade.',
-    tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Docker', 'HTML / CSS / JavaScript'],
+    category: 'SISTEMAS & BACK-END / PROJETO INTEGRADOR',
+    title: 'SENAI Exchange – Sistema de Trocas entre Alunos',
+    summary: 'Plataforma para troca de materiais acadêmicos entre alunos do SENAI em arquitetura MVC com Spring Boot, banco PostgreSQL modelado e Docker.',
+    tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Spring Data JPA', 'Docker', 'MVC'],
     demo: {
       src: './assets/demos/senai-exchange.mp4',
       poster: './assets/demos/senai-exchange.jpg',
@@ -228,32 +228,32 @@ const projects = {
       description: 'Acompanhe a navegação pelo SENAI Exchange e veja a plataforma em funcionamento.',
       source: 'https://www.linkedin.com/feed/update/urn:li:activity:7473764030248120320/'
     },
-    context: '<h3>O problema</h3><p>Materiais, livros e componentes que um aluno já não utiliza podem ser úteis para outro. O SENAI Exchange organiza os anúncios e as propostas de troca em uma aplicação web.</p><h3>O que construímos</h3><p>Cadastro de alunos, catálogo de itens, propostas, mensagens e perfis. O banco relaciona alunos, cursos, categorias, itens, imagens, trocas e mensagens.</p><p class="case-note">Projeto Integrador de ADS, desenvolvido em equipe. A documentação e o código estão disponíveis no GitHub.</p>',
+    context: '<h3>O problema</h3><p>Plataforma para troca e compartilhamento de materiais acadêmicos, livros e ferramentas entre a comunidade de alunos do SENAI.</p><h3>Minha atuação no projeto</h3><p>Responsável direto pela <strong>modelagem e criação do banco de dados PostgreSQL</strong> e por sua integração completa com o back-end em <strong>Spring Boot</strong>.</p><p>Aplicação estruturada em camadas MVC, com APIs REST e persistência utilizando Spring Data JPA/Hibernate. Inclui gerenciamento de anúncios, propostas de troca, mensagens entre alunos, autenticação de usuários e ambiente conteinerizado com Docker Compose.</p><p class="case-note">Projeto Integrador do Tecnólogo em Análise e Desenvolvimento de Sistemas (SENAI Sorocaba).</p>',
     flow: [
-      ['Interface web', 'HTML, CSS e JavaScript. Comunicação com a API usando Fetch.'],
-      ['Spring Boot', 'API REST e arquivos estáticos servidos pela mesma aplicação.'],
-      ['JPA + PostgreSQL', 'Persistência das entidades e relações do sistema.'],
-      ['Ambiente local', 'PostgreSQL e pgAdmin organizados com Docker Compose.']
+      ['Interface web', 'HTML, CSS e JavaScript responsivo. Comunicação com a API usando Fetch.'],
+      ['Spring Boot MVC', 'API REST modular e camadas de serviço e controle.'],
+      ['JPA + PostgreSQL', 'Modelagem relacional completa, mapeamento ORM e integridade referencial.'],
+      ['Docker Compose', 'Ambiente de desenvolvimento padronizado com PostgreSQL e pgAdmin.']
     ],
-    architectureNote: 'O projeto é uma aplicação monolítica: o próprio Spring Boot serve a interface web. O Docker Compose organiza o banco e o pgAdmin.',
-    learning: '<h3>Da modelagem à aplicação</h3><ul><li>Traduzir regras de troca em entidades, relacionamentos e estados.</li><li>Conectar o modelo relacional às operações da API.</li><li>Entender o fluxo entre interface, regras de negócio e persistência.</li><li>Organizar o desenvolvimento em equipe com uma base de código compartilhada.</li></ul><p class="case-note">É uma aplicação da minha formação em ADS, com conexão direta aos fundamentos de bancos de dados.</p>',
+    architectureNote: 'Arquitetura monolítica modular: back-end em Spring Boot com Spring Data JPA e banco PostgreSQL conteinerizado via Docker Compose.',
+    learning: '<h3>Da modelagem à aplicação</h3><ul><li>Modelagem relacional e criação de schemas PostgreSQL para fluxo de anúncios e trocas.</li><li>Construção de APIs REST robustas com Java e Spring Boot com persistência JPA/Hibernate.</li><li>Fluxos de autenticação, controle de estado de propostas e mensagens entre alunos.</li><li>Organização do ambiente com Docker para reprodutibilidade.</li></ul><p class="case-note">Aplicação da graduação em ADS, integrando boas práticas de back-end e banco de dados relacional.</p>',
     source: 'https://github.com/Arthur-2612/sistema-trocas-alunos',
     sourceLabel: 'Código e documentação ↗'
   },
   pet: {
-    category: 'IA APLICADA / VISÃO COMPUTACIONAL',
-    title: 'IA para inspeção de garrafas PET',
-    summary: 'Aplicação de IA e visão computacional para detectar irregularidades em garrafas PET e integrar as detecções a uma esteira de inspeção.',
-    tags: ['Python', 'YOLO', 'Roboflow', 'Visão computacional', 'Integração de sistemas'],
-    context: '<h3>O problema</h3><p>Detectar garrafas PET sem tampa ou sem rótulo em uma linha de inspeção, usando imagens para identificar as irregularidades.</p><h3>Como aplicamos IA</h3><p>No TCC, usei IA aplicada à visão computacional, com Python, YOLO e Roboflow. A câmera fornece as imagens e o processamento no notebook identifica as condições das garrafas. As detecções são integradas ao mecanismo de rejeição da esteira.</p><p class="case-note">TCC desenvolvido em equipe e apresentado no SENAI Gaspar Ricardo Jr. em 2025. A apresentação do projeto está no meu LinkedIn.</p>',
+    category: 'IA APLICADA & VISÃO / TCC DE MECATRÔNICA',
+    title: 'IA para Inspeção de Garrafas PET – TCC de Mecatrônica',
+    summary: 'Solução de visão computacional em Python (YOLO/Roboflow) integrada a CLP Omron em esteira industrial. Modelo com +200 imagens e +50 testes.',
+    tags: ['Python', 'YOLO', 'Roboflow', 'CLP Omron', 'Visão Computacional', 'Automação'],
+    context: '<h3>O problema</h3><p>Identificação automatizada de irregularidades (garrafas PET sem tampa ou sem rótulo) em esteira transportadora, evitando o envio de peças não-conformes.</p><h3>O que fiz no TCC</h3><p><strong>Meu TCC foi desenvolvido durante o Técnico em Mecatrônica no SENAI Sorocaba (jan/2024 - dez/2025):</strong></p><ul><li>Treinamento do modelo de visão computacional com <strong>mais de 200 imagens</strong> anotadas via Roboflow/YOLO para detecção de irregularidades.</li><li>Programação da lógica de controle e automação no <strong>CLP Omron</strong> para acionamento do mecanismo mecânico de ejeção.</li><li>Execução de <strong>mais de 50 testes</strong> do código Python para garantir confiabilidade e sincronia entre a inspeção visual e a rejeição física.</li><li>Integração completa entre visão computacional e automação industrial.</li></ul><p class="case-note">TCC de Mecatrônica desenvolvido em equipe no SENAI Gaspar Ricardo Jr. em 2025. Demonstração prática disponível no LinkedIn.</p>',
     flow: [
-      ['Captura de imagens', 'A câmera USB fornece as imagens das garrafas na esteira.'],
-      ['Inferência com IA', 'Python e YOLO processam as imagens no notebook, com uso de Roboflow no projeto.'],
-      ['Detecção de irregularidades', 'A visão computacional identifica garrafas sem tampa ou sem rótulo.'],
-      ['Integração com a esteira', 'Arduino e CLP Omron conectam o sinal da detecção ao mecanismo pneumático de rejeição.']
+      ['Captura de imagens', 'Câmera instalada na esteira fornecendo frames em tempo real.'],
+      ['Inferência com YOLO', 'Modelo treinado com +200 imagens processando os frames via Python.'],
+      ['Detecção de irregularidades', 'Identificação instantânea de garrafas sem tampa ou sem rótulo.'],
+      ['Acionamento de CLP Omron', 'Sinal digital enviado ao CLP para ejeção física da peça não-conforme (+50 testes).']
     ],
-    architectureNote: 'O núcleo de IA roda no notebook e transforma imagens em detecções. A integração com o controle industrial permite que o resultado da análise acione uma ação física.',
-    learning: '<h3>IA aplicada além da tela</h3><ul><li>Aplicar visão computacional à identificação de irregularidades em um objeto físico.</li><li>Conectar o processamento das imagens em Python ao restante do sistema.</li><li>Entender o caminho entre captura, inferência, detecção e acionamento.</li><li>Testar a integração entre a saída da IA e a esteira.</li></ul><p>O projeto conecta meu interesse por IA aplicada à integração de sistemas.</p>',
+    architectureNote: 'O pipeline de visão computacional em Python comunica diretamente com o CLP Omron via protocolo industrial para controle em tempo real.',
+    learning: '<h3>IA aplicada além da tela</h3><ul><li>Treinamento de visão computacional (+200 imagens) voltado a padrões industriais.</li><li>Conexão direta entre modelos de IA em Python e equipamentos de automação de fábrica (CLP Omron).</li><li>Validação exaustiva com mais de 50 testes para sincronismo mecânico e de software.</li><li>Visão ponta a ponta adquirida durante a formação no Técnico em Mecatrônica.</li></ul><p class="case-note">O projeto une inteligência artificial aplicada à robótica e automação industrial.</p>',
     source: 'https://pt.linkedin.com/posts/arthur-faria-e-silva-85b04a290_automa%C3%A7%C3%A3oindustrial-mecatr%C3%B4nica-clp-activity-7415834404188745728-lzUn',
     sourceLabel: 'Apresentação no LinkedIn ↗'
   }
@@ -1016,15 +1016,28 @@ PID   AGENT / PROCESSO        CPU%   MEM%    LATÊNCIA   STATUS
     cv: () => `
 <pre style="color:#fbbf24;font-family:var(--mono);font-size:0.72rem;line-height:1.45;margin:0">
 ================================================================================
-ARTHUR FARIA E SILVA | ADS &amp; IA APLICADA
+ARTHUR FARIA E SILVA | DESENVOLVEDOR EM FORMAÇÃO | IA, AGENTES &amp; DADOS
+Sorocaba, SP | (15) 99858-5979 | afaria2612@gmail.com
 ================================================================================
-[FORMAÇÃO]
-• Tecnólogo em Análise e Desenvolvimento de Sistemas — SENAI Gaspar Ricardo Jr. (2026–2027)
+[RESUMO PROFISSIONAL]
+Estudante de ADS no SENAI Sorocaba e estagiário em Data &amp; AI na 2RP Net.
+Atuação em agentes de IA, RAG com PostgreSQL e pgvector, APIs REST, Python e Java/Spring Boot.
+Formação técnica em Mecatrônica com experiência em visão computacional e automação industrial.
 
-[EXPERIÊNCIA]
-• Estagiário em Engenharia de Dados &amp; IA — 2RP Net (2026–Atual)
-  - Demandas de arquitetura de IA: RAG híbrido com pgvector, integração Projuris
-  - Sistemas multiagente com Google ADK, schemas Pydantic e pipelines analíticos
+[FORMAÇÃO ACADÊMICA &amp; TÉCNICA]
+• Tecnólogo em Análise e Desenvolvimento de Sistemas — Faculdade SENAI Sorocaba (jan/2026 – dez/2027)
+• Técnico em Mecatrônica — SENAI Sorocaba (jan/2024 – dez/2025 · Onde realizei meu TCC)
+
+[EXPERIÊNCIA PROFISSIONAL]
+• Estagiário em Data &amp; AI — 2RP Net (mar/2026 – Atual · Sorocaba, SP)
+  - Agente de IA para minutas de termos aditivos com integração Projuris e RAG no pgvector
+  - Avaliação contínua de qualidade e testes com revisão jurídica humana obrigatória
+  - Techs: Python, FastAPI, RAG, PostgreSQL, pgvector, Docker e Kubernetes
+
+[PROJETOS &amp; MÉTRICAS]
+• Home Credit: Subagente Bureau integrado ao Concierge (4 especialistas), +30 testes
+• Inspeção PET (TCC Mecatrônica): Modelo YOLO com +200 imagens, CLP Omron, +50 testes
+• SENAI Exchange: Modelagem banco PostgreSQL, Spring Boot MVC, REST APIs e Docker
 
 [CERTIFICAÇÕES TÉCNICAS (2025–2026)]
 • Google Cloud: Data Lakes e Data Warehouses no GCP (Badge Oficial, 2026)
@@ -1032,15 +1045,14 @@ ARTHUR FARIA E SILVA | ADS &amp; IA APLICADA
 • Hashtag Treinamentos: Agentes de IA com n8n (2026)
 • SENAI Sorocaba: Lei Geral de Proteção de Dados - LGPD (2025)
 
-[CORE STACK]
-• Python, FastAPI, Google ADK, LangChain, Pydantic, pgvector, BigQuery, Docker, Java/Spring
-
-[CONTATO]
-• LinkedIn: linkedin.com/in/arthur-faria-e-silva-85b04a290/
-• GitHub:   github.com/Arthur-2612
+[COMPETÊNCIAS TÉCNICAS]
+• Linguagens: Python, Java, SQL, JavaScript, HTML, CSS
+• IA &amp; Dados: RAG, pgvector, Google ADK, Pandas, Pydantic, BigQuery, YOLO, Roboflow
+• Back-end &amp; DB: Spring Boot, Spring Data JPA, FastAPI, PostgreSQL, APIs REST, MVC
+• DevOps &amp; Cloud: Git, GitHub, Docker, Docker Compose, Kubernetes, Google Cloud (GCP)
 ================================================================================
 </pre>
-<span style="color:#8f98a8">Dica: Você também pode abrir a ficha executiva com o comando <strong style="color:#fbbf24">recruiter</strong> ou pressionando o botão <strong style="color:#fbbf24">⌘R</strong>.</span>
+<span style="color:#8f98a8">Dica: Você também pode abrir a ficha executiva com o comando <strong style="color:#fbbf24">recruiter</strong> ou pressionando o botão <strong style="color:#fbbf24">⚡ Modo Recrutador (⌘R)</strong>.</span>
     `,
     resume: () => commands.cv(),
     curriculo: () => commands.cv(),
@@ -1072,11 +1084,11 @@ traceroute to southamerica-east1.gcp.internal (10.128.0.1), 30 hops max:
     },
     skills: () => `
 <strong style="color:#fbbf24">CORE STACK &amp; FERRAMENTAS:</strong><br>
-[IA &amp; Agentes]     Python, LangChain, Google ADK, LangGraph, Prompt Engineering<br>
-[Bancos &amp; Vetores] PostgreSQL, pgvector, BigQuery, Redis, SQLite<br>
-[APIs &amp; Backend]   FastAPI, RESTful APIs, Spring Boot (Java), Pydantic<br>
-[Eng. de Dados]   Pandas, PySpark, Data Pipelines, Extração/OCR<br>
-[DevOps &amp; Cloud]  Docker, Git, Google Cloud Platform (GCP), Linux
+[Linguagens]       Python, Java, SQL, JavaScript, HTML, CSS<br>
+[IA &amp; Agentes]     RAG, pgvector, Google ADK, LangChain, Pydantic, Prompts<br>
+[Dados &amp; Visão]    Pandas, BigQuery, YOLO, Roboflow, Visão Computacional<br>
+[Back-end &amp; DB]   Spring Boot, Spring Data JPA, FastAPI, PostgreSQL, MVC<br>
+[DevOps &amp; Nuvem]  Docker, Docker Compose, Kubernetes, Git, GitHub, Google Cloud (GCP)
     `,
     certs: () => `
 <strong style="color:#fbbf24">CERTIFICAÇÕES TÉCNICAS &amp; BADGES OFICIAIS:</strong><br>
@@ -1096,7 +1108,7 @@ traceroute to southamerica-east1.gcp.internal (10.128.0.1), 30 hops max:
    • Emissor: SENAI Sorocaba<br>
    • Foco: Conformidade regulatória (Lei nº 13.709/2018), Privacy by Design e governança de dados.<br>
 <br>
-<span style="color:#8f98a8">Dica: Visualize os cards interativos na aba <strong style="color:#fbbf24">03: Certificações</strong> da seção Trajetória.</span>
+<span style="color:#8f98a8">Dica: Visualize os cards interativos na aba <strong style="color:#fbbf24">04: Certificações</strong> da seção Trajetória.</span>
     `,
     certifications: () => commands.certs(),
     certificados: () => commands.certs(),
@@ -1110,60 +1122,71 @@ traceroute to southamerica-east1.gcp.internal (10.128.0.1), 30 hops max:
     `,
     metrics: () => `
 <strong style="color:#fbbf24">BENCHMARKS &amp; MÉTRICAS EM DESTAQUE:</strong><br>
-• <strong>Projetos Multiagente:</strong> 4 agentes especialistas simultâneos em produção piloto<br>
-• <strong>Precisão de Extração:</strong> Validação estruturada via contratos Pydantic (100% de conformidade de schema)<br>
-• <strong>Pipeline de Documentos:</strong> Geração automatizada de minutas preliminares DOCX integradas ao Projuris<br>
-• <strong>Inspeção por Visão Computacional:</strong> Detecção em tempo real de garrafas PET com YOLO
+• <strong>Home Credit (Multiagentes):</strong> Orquestrador Concierge + 4 especialistas, validação com <span style="color:#34d399">+30 testes</span> e schemas JSON via Pydantic.<br>
+• <strong>Inspeção PET (TCC Mecatrônica):</strong> Modelo YOLO treinado com <span style="color:#34d399">+200 imagens</span>, integração com CLP Omron e <span style="color:#34d399">+50 testes</span> no código Python.<br>
+• <strong>SENAI Exchange (Back-end ADS):</strong> Modelagem relacional PostgreSQL, Spring Boot MVC, Spring Data JPA/Hibernate e Docker.<br>
+• <strong>Agente Jurídico (2RP Net):</strong> Integração Projuris, RAG com PostgreSQL e pgvector, geração DOCX e revisão humana obrigatória.
     `,
     whoami: () => `
-<strong style="color:#fbbf24">Arthur Faria e Silva</strong><br>
-Estudante de Análise e Desenvolvimento de Sistemas no SENAI Gaspar Ricardo Jr.<br>
-Estagiário em Engenharia de Dados &amp; IA na 2RP Net.<br>
-Foco: Conectar dados corporativos, modelos de linguagem e engenharia de software robusta.
+<strong style="color:#fbbf24">Arthur Faria e Silva</strong> (18 anos · Sorocaba – SP)<br>
+• <strong>Estagiário em Data &amp; AI</strong> na 2RP Net (mar/2026 – atual)<br>
+• <strong>Graduando em ADS</strong> na Faculdade SENAI Sorocaba (jan/2026 – dez/2027)<br>
+• <strong>Técnico em Mecatrônica</strong> pelo SENAI Sorocaba (jan/2024 – dez/2025 · Onde desenvolvi meu TCC)<br>
+Foco: Soluções práticas unindo agentes de IA, RAG, APIs REST, Python, dados e engenharia de software.
     `,
     contact: () => `
 <strong style="color:#fbbf24">CANAL DE CONTATO:</strong><br>
 • LinkedIn: <a href="https://www.linkedin.com/in/arthur-faria-e-silva-85b04a290/" target="_blank" rel="noopener noreferrer" style="color:#f59e0b;text-decoration:underline">linkedin.com/in/arthur-faria-e-silva-85b04a290/</a><br>
 • GitHub:   <a href="https://github.com/Arthur-2612" target="_blank" rel="noopener noreferrer" style="color:#f59e0b;text-decoration:underline">github.com/Arthur-2612</a><br>
-• Foco:     Estágio &amp; Oportunidades em IA Aplicada / Engenharia de Software
+• Email:    <a href="mailto:afaria2612@gmail.com" style="color:#f59e0b;text-decoration:underline">afaria2612@gmail.com</a><br>
+• Foco:     Estágio &amp; Oportunidades em IA, Dados e Software
     `,
     projects: () => `
 <strong style="color:#fbbf24">PROJETOS EM DESTAQUE NO PORTFÓLIO:</strong><br>
-1. <strong>agents:</strong> Home Credit · Sistema multiagente com Google ADK, 4 especialistas e contratos Pydantic.<br>
-2. <strong>pet:</strong> IA para Inspeção de Garrafas PET · YOLOv8, OpenCV e integração com CLP industrial Omron.<br>
-3. <strong>exchange:</strong> SENAI Exchange · Aplicação Full-Stack com Java 17, Spring Boot 3 e PostgreSQL.<br>
-4. <strong>legal:</strong> Agente Jurídico · Projuris, RAG híbrido com pgvector e geração de minutas DOCX.<br>
-<span style="color:#8f98a8">Dica: Digite o nome de qualquer projeto (ex: <span style="color:#fbbf24">pet</span>, <span style="color:#fbbf24">agents</span>) para ver os detalhes técnicos.</span>
+1. <strong>agents:</strong> Home Credit · Multiagentes com Google ADK, 4 especialistas, Pydantic e +30 testes.<br>
+2. <strong>pet:</strong> IA para Inspeção de Garrafas PET (TCC Mecatrônica) · YOLO, Roboflow, CLP Omron, +200 imagens e +50 testes.<br>
+3. <strong>exchange:</strong> SENAI Exchange · Modelagem PostgreSQL, Spring Boot MVC, REST APIs e Docker.<br>
+4. <strong>legal:</strong> Agente Jurídico (2RP Net) · Projuris, RAG híbrido com pgvector e geração de minutas DOCX.<br>
+<span style="color:#8f98a8">Dica: Digite o nome de qualquer projeto (ex: <span style="color:#fbbf24">pet</span>, <span style="color:#fbbf24">agents</span>, <span style="color:#fbbf24">meca</span>) para ver os detalhes técnicos.</span>
     `,
     projetos: () => commands.projects(),
     pet: () => `
-<strong style="color:#fbbf24">INSPEÇÃO DE GARRAFAS PET · YOLO &amp; AUTOMAÇÃO:</strong><br>
-• <strong>Hardware:</strong> Câmera USB 640x640 @ 30 FPS, CLP Omron CP1E, Pistão Pneumático<br>
-• <strong>Inferência:</strong> YOLOv8 nano via PyTorch/ONNX Runtime (latência média ~22.8ms)<br>
-• <strong>Classes:</strong> Tampa (conforme/ausente), Rótulo (conforme/ausente), Garrafa<br>
-• <strong>Acionamento:</strong> Saída digital 24V aciona o descarte mecânico de peças não-conformes.<br>
-• <strong>TCC:</strong> Desenvolvido e homologado no SENAI Gaspar Ricardo Jr. (2025).
+<strong style="color:#fbbf24">INSPEÇÃO DE GARRAFAS PET · TCC DE MECATRÔNICA:</strong><br>
+• <strong>Formação:</strong> Desenvolvido no Técnico em Mecatrônica no SENAI Sorocaba (jan/2024 – dez/2025).<br>
+• <strong>Visão Computacional:</strong> Modelo treinado com +200 imagens anotadas (YOLO/Roboflow).<br>
+• <strong>Testes &amp; Validação:</strong> Execução de +50 testes no código Python de inspeção.<br>
+• <strong>Automação Industrial:</strong> Programação da lógica no CLP Omron para descarte mecânico em esteira.<br>
+• <strong>Classes:</strong> Tampa (conforme/ausente), Rótulo (conforme/ausente) e Garrafa.
     `,
+    meca: () => `
+<strong style="color:#fbbf24">TÉCNICO EM MECATRÔNICA · SENAI SOROCABA:</strong><br>
+• Período: jan/2024 – dez/2025 (Concluído)<br>
+• Trabalho de Conclusão de Curso (TCC): IA para inspeção de garrafas PET em esteira automatizada.<br>
+• Competências: Visão computacional (YOLO, Roboflow), automação industrial, comandos elétricos, CLP Omron, sensores e atuadores.
+    `,
+    mecatronica: () => commands.meca(),
+    tcc: () => commands.pet(),
     agents: () => `
 <strong style="color:#fbbf24">HOME CREDIT · SISTEMA MULTIAGENTE (GOOGLE ADK):</strong><br>
-• <strong>Orquestrador:</strong> Concierge Agent delegando chamadas semânticas<br>
-• <strong>Especialistas:</strong> Bureau (créditos externos), Pagamentos (atrasos), Cartão (limite) e Contratos<br>
-• <strong>Contratos Estritos:</strong> Schemas Pydantic v2 com validação 100% determinística<br>
-• <strong>Tratamento de Dados:</strong> Ausência de histórico e tratamento explícito de nulos em Pandas.
+• <strong>Subagente Bureau:</strong> Responsável pela análise do histórico de crédito externo dos clientes.<br>
+• <strong>Orquestração:</strong> Agente Concierge orquestrando 4 especialistas (Bureau, Pagamentos, Cartão e Contratos).<br>
+• <strong>Contratos Pydantic:</strong> Estruturação dos resultados em JSON com validação determinística.<br>
+• <strong>Testes:</strong> Execução de +30 testes para validação e integração dos agentes.
     `,
     exchange: () => `
-<strong style="color:#fbbf24">SENAI EXCHANGE · ARQUITETURA BACKEND:</strong><br>
-• <strong>Framework:</strong> Java 17 + Spring Boot 3 (Spring Data JPA, Hibernate)<br>
-• <strong>Banco de Dados:</strong> PostgreSQL 15 com índices compostos e Docker Compose<br>
-• <strong>Integridade:</strong> Validações Jakarta Bean Validation e transações ACID @Transactional<br>
-• <strong>Projeto Integrador:</strong> Desenvolvido em equipe para a comunidade acadêmica do SENAI.
+<strong style="color:#fbbf24">SENAI EXCHANGE · PROJETO INTEGRADOR ADS:</strong><br>
+• <strong>Modelagem de Banco:</strong> Responsável pela modelagem e criação do banco de dados PostgreSQL.<br>
+• <strong>Back-end:</strong> Java com Spring Boot, Spring Data JPA/Hibernate e APIs REST em arquitetura MVC.<br>
+• <strong>Recursos:</strong> Gestão de anúncios, propostas de troca, mensagens entre alunos e autenticação.<br>
+• <strong>Infraestrutura:</strong> Conteinerização com Docker e Docker Compose.
     `,
     legal: () => `
 <strong style="color:#fbbf24">AGENTE JURÍDICO · PROJURIS &amp; RAG (2RP NET):</strong><br>
-• <strong>Pipeline:</strong> Ingestão assíncrona FastAPI BackgroundTasks + Webhooks Projuris<br>
-• <strong>Chunking &amp; Vetores:</strong> PostgreSQL + pgvector (índice HNSW) com hashes SHA-256<br>
-• <strong>Geração Documental:</strong> Minuta preliminar DOCX editável gerada via python-docx<br>
-• <strong>Governança:</strong> Human-in-the-Loop obrigatório (revisão e validação final do advogado).
+• <strong>Escopo:</strong> Agente de IA para minutas de termos aditivos contratuais para cliente do setor financeiro.<br>
+• <strong>Integração Projuris:</strong> Conexão para consulta e ingestão de documentos na esteira do agente.<br>
+• <strong>RAG com pgvector:</strong> Recuperação contextual densa no PostgreSQL/pgvector para apoiar a minuta.<br>
+• <strong>Testes &amp; Qualidade:</strong> Implementação de testes e avaliação contínua da qualidade dos documentos processados.<br>
+• <strong>Governança:</strong> Human-in-the-Loop obrigatório (revisão jurídica humana antes de qualquer decisão).
     `,
     matrix: () => commands.theme(),
     clear: () => null
@@ -1368,9 +1391,9 @@ function initCommandPalette() {
       group: 'NAVEGAÇÃO RÁPIDA',
       id: 'nav_trajetoria',
       title: 'Trajetória & Formação',
-      desc: 'ADS no SENAI e estágio em engenharia de dados & IA na 2RP Net',
+      desc: 'ADS e Mecatrônica no SENAI Sorocaba · Estágio em Data & AI na 2RP Net',
       badge: 'Carreira',
-      keywords: 'trajetoria carreira senai ads 2rp net estagio formacao',
+      keywords: 'trajetoria carreira senai ads meca mecatronica 2rp net estagio formacao tcc',
       run: () => { const el = document.getElementById('trajetoria'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
     },
     {
@@ -1465,14 +1488,30 @@ function initCommandPalette() {
     },
     {
       group: 'DESTAQUES & RECURSOS',
-      id: 'cmd_rag_sim',
-      title: 'Simulador RAG: pgvector vs SQL LIKE',
-      desc: 'Demonstração prática de busca vetorial semântica vs consulta tradicional',
-      badge: 'Simulador',
-      keywords: 'rag simulador pgvector busca vetorial semantica cosseno like',
+      id: 'cmd_traj_meca',
+      title: 'Formação: Técnico em Mecatrônica (TCC)',
+      desc: 'SENAI Sorocaba (jan/2024 – dez/2025) · Onde desenvolvi meu TCC em visão computacional',
+      badge: 'Formação',
+      keywords: 'meca mecatronica tcc senai sorocaba tecnico yolo clp omron formacao',
       run: () => {
-        const card = document.querySelector('.rag-sandbox-card');
-        if (card) card.scrollIntoView({ behavior: 'smooth' });
+        const tab = document.getElementById('career-tab-meca');
+        if (tab) tab.click();
+        const el = document.getElementById('trajetoria');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    {
+      group: 'DESTAQUES & RECURSOS',
+      id: 'cmd_traj_work',
+      title: 'Experiência: Estágio em Data & AI (2RP Net)',
+      desc: 'Atuação em agentes de IA, RAG com PostgreSQL e pgvector e Projuris',
+      badge: 'Atuação',
+      keywords: '2rp net estagio trabalho experiencia data ai rag pgvector projuris',
+      run: () => {
+        const tab = document.getElementById('career-tab-work');
+        if (tab) tab.click();
+        const el = document.getElementById('trajetoria');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
       }
     },
     {
@@ -1817,82 +1856,8 @@ function initCertificationsFilter() {
 initCertificationsFilter();
 
 
-/* Interactive pgvector RAG Sandbox */
-function initRagSandbox() {
-  const presetBtns = document.querySelectorAll('.rag-preset-btn');
-  if (!presetBtns.length) return;
-
-  const simScoreEl = document.getElementById('rag-sim-score');
-  const vectorPreviewEl = document.getElementById('rag-vector-preview');
-  const clauseTagEl = document.getElementById('rag-clause-tag');
-  const clauseContentEl = document.getElementById('rag-clause-content');
-  const pgVerdictEl = document.getElementById('rag-pg-verdict');
-  const sqlQueryEl = document.getElementById('rag-sql-query');
-  const sqlEmptyCard = document.querySelector('.rag-clause-card.sql-empty small');
-
-  const presets = {
-    multa: {
-      score: 'Similaridade: 0.941 (Alta relevância)',
-      vector: '[+0.182, -0.419, +0.884, -0.012, +0.305, ...]',
-      tag: 'CLÁUSULA 8ª · RESCISÃO IMOTIVADA & PENALIDADES',
-      content: '"Na hipótese de término unilateral prematuro sem justa causa, incidirá indenização compensatória no percentual de 20% (vinte por cento) das parcelas vincendas até o término do período avençado."',
-      verdict: '✓ Match semântico identificado: o modelo associou "cancelamento" à "rescisão imotivada", recuperando o contexto jurídico exato.',
-      sql: "SELECT * FROM clausulas WHERE texto ILIKE '%cancelamento%';",
-      sqlExplain: 'A busca tradicional falhou porque a palavra exata "cancelamento" não consta no texto do contrato (que utiliza a expressão "término unilateral prematuro").'
-    },
-    vigencia: {
-      score: 'Similaridade: 0.918 (Alta relevância)',
-      vector: '[+0.342, +0.108, -0.715, +0.229, -0.094, ...]',
-      tag: 'CLÁUSULA 3ª · PRAZO DE EXECUÇÃO & PRORROGAÇÃO',
-      content: '"O presente instrumento vigerá pelo prazo improrrogável de 12 (doze) meses, facultada a celebração de termo aditivo mediante anuência expressa com antecedência mínima de 30 dias."',
-      verdict: '✓ Match semântico identificado: associação direta entre "renovação" e "celebração de termo aditivo mediante anuência expressa".',
-      sql: "SELECT * FROM clausulas WHERE texto ILIKE '%renovação%';",
-      sqlExplain: 'Zero registros encontrados no SQL LIKE. O texto formal utiliza "celebração de termo aditivo", termo ausente na consulta por palavra-chave literal.'
-    },
-    reajuste: {
-      score: 'Similaridade: 0.935 (Alta relevância)',
-      vector: '[-0.201, +0.554, +0.630, -0.411, +0.178, ...]',
-      tag: 'CLÁUSULA 5ª · PREÇO E ATUALIZAÇÃO MONETÁRIA',
-      content: '"Os valores contratados serão corrigidos a cada 12 (doze) meses de vigência com base na variação positiva acumulada do IPCA/IBGE ocorrida no período correspondente."',
-      verdict: '✓ Match semântico identificado: mapeamento entre "inflação" e o indexador formal "variação positiva acumulada do IPCA/IBGE".',
-      sql: "SELECT * FROM clausulas WHERE texto ILIKE '%inflação%';",
-      sqlExplain: 'Busca sem retorno. A palavra "inflação" não ocorre de forma literal no texto legal (o contrato cita apenas a sigla "IPCA/IBGE").'
-    },
-    foro: {
-      score: 'Similaridade: 0.952 (Alta relevância)',
-      vector: '[+0.074, -0.682, +0.449, +0.512, -0.320, ...]',
-      tag: 'CLÁUSULA 14ª · ELEIÇÃO DE FORO E DISPUTAS',
-      content: '"Para dirimir quaisquer controvérsias decorrentes deste contrato, as partes elegem o Foro da Comarca de Sorocaba/SP, com expressa renúncia a qualquer outro, por mais privilegiado que seja."',
-      verdict: '✓ Match semântico identificado: o modelo conectou "conflitos" à expressão jurídica formal "dirimir quaisquer controvérsias".',
-      sql: "SELECT * FROM clausulas WHERE texto ILIKE '%conflitos%';",
-      sqlExplain: 'Busca vazia: "conflitos" não foi encontrado pelo SQL LIKE. O texto formal emprega o termo "controvérsias".'
-    }
-  };
-
-  presetBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const key = btn.getAttribute('data-rag-query');
-      const data = presets[key];
-      if (!data) return;
-
-      presetBtns.forEach(b => {
-        const active = b === btn;
-        b.classList.toggle('active', active);
-        b.setAttribute('aria-pressed', String(active));
-      });
-
-      if (simScoreEl) simScoreEl.textContent = data.score;
-      if (vectorPreviewEl) vectorPreviewEl.textContent = data.vector;
-      if (clauseTagEl) clauseTagEl.textContent = data.tag;
-      if (clauseContentEl) clauseContentEl.textContent = data.content;
-      if (pgVerdictEl) pgVerdictEl.textContent = data.verdict;
-      if (sqlQueryEl) sqlQueryEl.textContent = data.sql;
-      if (sqlEmptyCard) sqlEmptyCard.textContent = data.sqlExplain;
-
-      if (typeof sfx !== 'undefined' && sfx.pop) sfx.pop();
-    });
-  });
-}
+/* Vector Search Sandbox removed per user request for visual clarity */
+function initRagSandbox() {}
 initRagSandbox();
 
 /* Recruiter Fast-Track / Executive Summary Drawer */
