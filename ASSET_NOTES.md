@@ -5,6 +5,7 @@ Imagens decorativas criadas com a ferramenta integrada de geração de imagens, 
 - `dist/assets/projects/agents-pixel.webp`: núcleo luminoso e quatro módulos conectados, representando a orquestração de agentes.
 - `dist/assets/projects/pet-pixel.webp`: câmera e garrafas PET em uma esteira, representando visão computacional.
 - `dist/assets/projects/exchange-pixel.webp`: interfaces conectadas pela troca de itens e um banco de dados.
+- `dist/assets/projects/jarvis-pixel.webp`: núcleo holográfico estilo arc-reactor com anéis concêntricos e ondas de frequência, representando o assistente de voz e automação.
 
 ## Direção dos prompts
 
@@ -13,3 +14,4 @@ Pixel art isométrica editorial, proporção 3:2, fundo azul marinho, objetos em
 1. **Agentes:** processador central cristalino sobre plataforma computacional, quatro módulos satélites ligados por fluxos de partículas de dados; sem robôs, cérebros, moedas ou gráficos.
 2. **PET:** esteira de inspeção com três garrafas PET translúcidas, uma sem tampa, câmera e feixe de leitura com enquadramentos de detecção; foco em visão computacional.
 3. **Exchange:** duas janelas de aplicação isométricas trocando livro e componente eletrônico por fluxos direcionais, com blocos de interface e banco de dados conectado; sem carrinhos, moedas ou logotipos.
+4. **JARVIS:** núcleo holográfico arc-reactor com anéis luminosos concêntricos sobre pedestal geométrico minimalista, ondas de frequência de áudio e nós interconectados em perspectiva isométrica; sem robôs, sem cabeças humanas ou texto.
