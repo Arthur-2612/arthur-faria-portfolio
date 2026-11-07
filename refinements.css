@@ -158,22 +158,23 @@ nav a{min-height:44px;display:flex;align-items:center}
 .stat-item span{display:block;font-size:.6875rem;font-family:var(--mono);color:#8f98a8;margin-top:4px;line-height:1.4}
 
 /* High-Definition Hero Portrait & Studio Framing */
-.hero-portrait{max-width:430px;perspective:1000px}
+.hero-portrait{max-width:390px;perspective:1000px}
 .hero-portrait:before{
   inset:14px -6px -12px 14px;
-  background:radial-gradient(circle at 75% 25%, rgba(245,158,11,.4), rgba(234,88,12,.18) 50%, transparent 75%);
+  background:radial-gradient(circle at 75% 25%, rgba(245,158,11,.35), rgba(234,88,12,.15) 50%, transparent 75%);
   border-radius:28px;
   filter:blur(16px);
   z-index:-1;
 }
 .portrait-frame{
-  aspect-ratio:1/1.1;
+  aspect-ratio:9/16;
   border-radius:24px;
-  border:1px solid rgba(245,158,11,.28);
-  background:linear-gradient(180deg, #171a26 0%, #0d0f17 100%);
+  border:1px solid rgba(245,158,11,.3);
+  background:#13151f;
   box-shadow:0 24px 60px rgba(0,0,0,.75), 0 0 30px rgba(245,158,11,.08);
   transition:transform .25s ease-out, border-color .3s, box-shadow .3s;
   position:relative;
+  overflow:hidden;
 }
 .portrait-frame:hover{
   border-color:rgba(245,158,11,.65);
@@ -182,20 +183,17 @@ nav a{min-height:44px;display:flex;align-items:center}
 .portrait-frame img{
   width:100%;
   height:100%;
+  display:block;
   object-fit:cover;
-  object-position:50% 10%;
-  filter:contrast(1.05) brightness(1.02);
+  object-position:center;
   image-rendering:-webkit-optimize-contrast;
-  image-rendering:crisp-edges;
   transition:transform .4s ease;
 }
 .portrait-frame:hover img{
   transform:scale(1.02);
 }
 .portrait-frame:after{
-  inset:auto 0 0;
-  height:48%;
-  background:linear-gradient(to top, rgba(12,13,18,.96) 12%, rgba(12,13,18,.5) 60%, transparent 100%);
+  display:none;
 }
 .portrait-frame figcaption{
   left:18px;
@@ -616,6 +614,92 @@ nav a{min-height:44px;display:flex;align-items:center}
 .exchange-step-card small{font:.6rem var(--mono);color:#f59e0b;display:block;margin-bottom:4px}
 .exchange-step-card strong{font-size:.85rem;color:#fff;display:block;margin-bottom:4px}
 .exchange-step-card p{font-size:.75rem;color:#8f98a8;margin:0;line-height:1.4}
+
+/* JARVIS Voice & HUD Simulator */
+.jarvis-explorer{border-top:1px solid #262a38;padding-top:24px;margin-top:20px}
+.jarvis-hud-viewport{
+  background:#090b10;
+  border:1px solid #242938;
+  border-radius:10px;
+  padding:22px;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:16px;
+}
+.jarvis-hud-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font:.7rem var(--mono);
+  color:#8f98a8;
+  margin-bottom:18px;
+  border-bottom:1px solid #1c202c;
+  padding-bottom:10px;
+}
+.jarvis-reactor-stage{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:18px 0;
+  position:relative;
+}
+.jarvis-arc-reactor{
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  border:2px dashed #00e5ff;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 24px rgba(0,229,255,.25), inset 0 0 20px rgba(0,229,255,.15);
+  animation:jarvis-pulse 3s infinite ease-in-out;
+  transition:all .3s ease;
+}
+.jarvis-arc-inner{
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  border:2px solid #38bdf8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle, rgba(0,229,255,.2) 0%, rgba(12,13,18,.9) 75%);
+}
+.jarvis-arc-core{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#00e5ff;
+  box-shadow:0 0 16px #00e5ff, 0 0 32px rgba(0,229,255,.5);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#090b10;
+  font:700 .7rem var(--mono);
+}
+.jarvis-hud-status-text{
+  margin-top:14px;
+  font:.85rem var(--mono);
+  font-weight:600;
+  color:#00e5ff;
+  letter-spacing:.06em;
+  text-shadow:0 0 12px rgba(0,229,255,.4);
+}
+@keyframes jarvis-pulse{
+  0%,100%{transform:scale(1);box-shadow:0 0 24px rgba(0,229,255,.2), inset 0 0 20px rgba(0,229,255,.15)}
+  50%{transform:scale(1.05);box-shadow:0 0 36px rgba(0,229,255,.4), inset 0 0 30px rgba(0,229,255,.3)}
+}
+.jarvis-telemetry-row{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:16px;
+}
+@media (max-width:768px){
+  .jarvis-telemetry-row{grid-template-columns:1fr 1fr}
+}
 
 /* Tech tag highlight synchronization */
 .tag-highlighted{
