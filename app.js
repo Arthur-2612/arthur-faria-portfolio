@@ -241,8 +241,8 @@ const projects = {
     sourceLabel: 'Código e documentação ↗'
   },
   pet: {
-    category: 'IA APLICADA & VISÃO / TCC DE MECATRÔNICA',
-    title: 'IA para Inspeção de Garrafas PET – TCC de Mecatrônica',
+    category: 'VISÃO COMPUTACIONAL / TCC DE MECATRÔNICA',
+    title: 'Visão Computacional para Inspeção de Garrafas PET – TCC de Mecatrônica',
     summary: 'Solução de visão computacional em Python (YOLO/Roboflow) integrada a CLP Omron em esteira industrial. Modelo com +200 imagens e +50 testes.',
     tags: ['Python', 'YOLO', 'Roboflow', 'CLP Omron', 'Visão Computacional', 'Automação'],
     context: '<h3>O problema</h3><p>Identificação automatizada de irregularidades (garrafas PET sem tampa ou sem rótulo) em esteira transportadora, evitando o envio de peças não-conformes.</p><h3>O que fiz no TCC</h3><p><strong>Meu TCC foi desenvolvido durante o Técnico em Mecatrônica no SENAI Sorocaba (jan/2024 - dez/2025):</strong></p><ul><li>Treinamento do modelo de visão computacional com <strong>mais de 200 imagens</strong> anotadas via Roboflow/YOLO para detecção de irregularidades.</li><li>Programação da lógica de controle e automação no <strong>CLP Omron</strong> para acionamento do mecanismo mecânico de ejeção.</li><li>Execução de <strong>mais de 50 testes</strong> do código Python para garantir confiabilidade e sincronia entre a inspeção visual e a rejeição física.</li><li>Integração completa entre visão computacional e automação industrial.</li></ul><p class="case-note">TCC de Mecatrônica desenvolvido em equipe no SENAI Gaspar Ricardo Jr. em 2025. Demonstração prática disponível no LinkedIn.</p>',
@@ -253,9 +253,26 @@ const projects = {
       ['Acionamento de CLP Omron', 'Sinal digital enviado ao CLP para ejeção física da peça não-conforme (+50 testes).']
     ],
     architectureNote: 'O pipeline de visão computacional em Python comunica diretamente com o CLP Omron via protocolo industrial para controle em tempo real.',
-    learning: '<h3>IA aplicada além da tela</h3><ul><li>Treinamento de visão computacional (+200 imagens) voltado a padrões industriais.</li><li>Conexão direta entre modelos de IA em Python e equipamentos de automação de fábrica (CLP Omron).</li><li>Validação exaustiva com mais de 50 testes para sincronismo mecânico e de software.</li><li>Visão ponta a ponta adquirida durante a formação no Técnico em Mecatrônica.</li></ul><p class="case-note">O projeto une inteligência artificial aplicada à robótica e automação industrial.</p>',
+    learning: '<h3>Visão Computacional aplicada além da tela</h3><ul><li>Treinamento de visão computacional (+200 imagens) voltado a padrões industriais.</li><li>Conexão direta entre modelos de visão computacional em Python e equipamentos de automação de fábrica (CLP Omron).</li><li>Validação exaustiva com mais de 50 testes para sincronismo mecânico e de software.</li><li>Visão ponta a ponta adquirida durante a formação no Técnico em Mecatrônica.</li></ul><p class="case-note">O projeto une visão computacional aplicada à robótica e automação industrial.</p>',
     source: 'https://pt.linkedin.com/posts/arthur-faria-e-silva-85b04a290_automa%C3%A7%C3%A3oindustrial-mecatr%C3%B4nica-clp-activity-7415834404188745728-lzUn',
     sourceLabel: 'Apresentação no LinkedIn ↗'
+  },
+  jarvis: {
+    category: 'AGENTES & AUTOMAÇÃO / PROJETO PESSOAL',
+    title: 'J.A.R.V.I.S – Assistente Pessoal com Voz & Interface HUD',
+    summary: 'Assistente virtual local em Python com reconhecimento contínuo de voz, síntese neural Edge TTS, HUD arc-reactor e automação do Windows.',
+    tags: ['Python', 'SpeechRecognition', 'Edge TTS', 'Tkinter', 'SoundDevice', 'PyAutoGUI', 'NumPy'],
+    context: '<h3>O projeto</h3><p>O <strong>J.A.R.V.I.S</strong> é um assistente pessoal local e completo desenvolvido em Python, inspirado na interface futurista do Homem de Ferro. Ele combina reconhecimento de voz contínuo, síntese neural de fala, interpretação de comandos do sistema operacional e interface gráfica HUD personalizada.</p><h3>Arquitetura e Módulos Desenvolvidos</h3><ul><li><strong>Ouvido (STT Contínuo):</strong> Escuta e transcrição de comandos de voz via SpeechRecognition com calibração acústica automática do ruído ambiente e suporte a seleção de microfones em tempo real.</li><li><strong>Voz (TTS Neural &amp; Anti-Eco):</strong> Síntese de voz com entonação natural via Microsoft Edge TTS (com fallback pyttsx3) e controle de concorrência com bloqueio de microfone via evento <code>threading.Event</code> para evitar que o assistente ouça o próprio eco.</li><li><strong>Cérebro (Processamento de Intenções):</strong> Parser e roteador inteligente de intenções, mapeando comandos em linguagem natural para execução de apps, controle de volume, janelas, pesquisas no Google e YouTube.</li><li><strong>Automação &amp; Sistema:</strong> Controle de janelas do SO, automações com PyAutoGUI, telemetria de hardware e suporte a gatilho sonoro alternativo com detector de duas palmas via SoundDevice/NumPy.</li><li><strong>Interface Gráfica HUD:</strong> Canvas animado em Tkinter com anéis pulsantes inspirados no arc-reactor, terminal de log em tempo real e caixa de comando manual como fallback.</li></ul><p class="case-note">Projeto de código aberto disponível no GitHub com scripts de inicialização automática e gerenciamento de dependências.</p>',
+    flow: [
+      ['Captura & Calibração', 'Microfone calibra ruído ambiente em 2s e entra em modo de escuta contínua.'],
+      ['Processamento & Cérebro', 'Identificação semântica de intenções (abrir apps, pesquisa, multimídia, sistema).'],
+      ['Trava Anti-Eco', 'Bloqueio do canal de áudio via threading.Event durante a resposta.'],
+      ['Síntese & Ação', 'Execução da ação no SO e resposta sonora fluida com Microsoft Edge TTS.']
+    ],
+    architectureNote: 'Pipeline assíncrono multithreaded: interface Tkinter na main thread, loop de voz em background daemon e detector de palmas em stream contínuo de áudio.',
+    learning: '<h3>O que desenvolvi e aprendi na prática</h3><ul><li>Arquitetura multithread robusta desacoplando interface gráfica, processamento de áudio em tempo real e automação.</li><li>Mecanismo determinístico anti-eco usando eventos de sincronização entre síntese e escuta.</li><li>Processamento de sinais acústicos e análise de picos de amplitude com NumPy para detecção de palmas.</li><li>Integração de serviços de síntese neural (Edge TTS) proporcionando voz natural sem custos de API externa.</li></ul><p class="case-note">Repositório com código completo, documentação e estrutura modular no GitHub.</p>',
+    source: 'https://github.com/Arthur-2612/JARVIS',
+    sourceLabel: 'Repositório no GitHub ↗'
   }
 };
 const specialists = {
@@ -485,7 +502,7 @@ function renderFlow(project, key) {
 
         <div class="vision-telemetry-row">
           <div class="vision-metric-pill success" id="pill-verdict">
-            <span>VEREDITO VISÃO IA</span>
+            <span>VEREDITO VISÃO COMPUTACIONAL</span>
             <strong id="vision-verdict">CONFORME (APROVADO)</strong>
           </div>
           <div class="vision-metric-pill" id="pill-clp">
@@ -761,6 +778,153 @@ function renderFlow(project, key) {
     target.append(explorer);
   }
 
+  if (key === 'jarvis') {
+    const explorer = document.createElement('div');
+    explorer.className = 'jarvis-explorer';
+    explorer.innerHTML = `
+      <div class="agent-sim-head">
+        <span class="architecture-label">PLAYGROUND INTERATIVO · PIPELINE DE ÁUDIO &amp; HUD ARC-REACTOR</span>
+        <h3>Simulador do Assistente J.A.R.V.I.S em Tempo Real</h3>
+      </div>
+      <p class="agent-sim-intro">Selecione uma ação para simular o ciclo de processamento acústico, a trava anti-eco e a síntese neural:</p>
+      <div class="agent-scenarios" role="group" aria-label="Selecione um cenário para simular no JARVIS">
+        <button class="agent-scenario-btn active" data-jarvis="abrir_app">Cenário 01 · Comando de Voz ("abrir spotify")</button>
+        <button class="agent-scenario-btn" data-jarvis="palmas">Cenário 02 · Detecção de Duas Palmas</button>
+        <button class="agent-scenario-btn" data-jarvis="pesquisa">Cenário 03 · Pesquisa Web ("pesquisar cotação do dólar")</button>
+        <button class="agent-scenario-btn" data-jarvis="manual">Cenário 04 · Entrada Manual Fallback ("que horas são")</button>
+      </div>
+
+      <div class="jarvis-hud-viewport">
+        <div class="jarvis-hud-header">
+          <span class="vision-live-tag">HUD V3 · THREAD PRINCIPAL TKINTER</span>
+          <span id="jarvis-audio-stat">TAXA: 44.1kHz · CALIBRAÇÃO: 2.0s</span>
+        </div>
+
+        <div class="jarvis-reactor-stage">
+          <div class="jarvis-arc-reactor" id="jarvis-reactor">
+            <div class="jarvis-arc-inner">
+              <div class="jarvis-arc-core" id="jarvis-reactor-core">AI</div>
+            </div>
+          </div>
+          <span class="jarvis-hud-status-text" id="jarvis-hud-status">OUVINDO...</span>
+        </div>
+
+        <div class="agent-pydantic-output">
+          <div class="pydantic-header">
+            <span>REGISTRO DE EVENTOS &amp; LOG DO SISTEMA (CONSOLE HUD)</span>
+            <span class="pydantic-status" id="jarvis-log-badge">ANTI-ECO: LIBERADO</span>
+          </div>
+          <pre class="pydantic-code" id="jarvis-hud-log"><code></code></pre>
+        </div>
+
+        <div class="jarvis-telemetry-row">
+          <div class="vision-metric-pill success" id="jarvis-pill-stt">
+            <span>MÓDULO STT</span>
+            <strong id="jarvis-tele-stt">SpeechRecognition</strong>
+          </div>
+          <div class="vision-metric-pill" id="jarvis-pill-tts">
+            <span>SÍNTESE TTS</span>
+            <strong id="jarvis-tele-tts">pt-BR-AntonioNeural</strong>
+          </div>
+          <div class="vision-metric-pill" id="jarvis-pill-lock">
+            <span>TRAVA ANTI-ECO</span>
+            <strong id="jarvis-tele-lock">INATIVO (MIC ABERTO)</strong>
+          </div>
+          <div class="vision-metric-pill">
+            <span>GATILHO ATIVO</span>
+            <strong id="jarvis-tele-trigger">Microfone Principal</strong>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const jarvisScenarios = {
+      abrir_app: {
+        status: 'PROCESSANDO COMANDO DE VOZ',
+        audioStat: 'Voz detectada: 68dB · Latência STT: 180ms',
+        logBadge: 'VOZ.FALANDO: TRAVA ATIVADA',
+        log: `[ouvido.py] Áudio capturado via microfone calibrado (2.0s ruído ambiente).
+[cerebro.py] Intenção identificada: ABRIR_APP -> Alvo: "spotify" (config.json)
+[voz.py] voz.falando.set() -> MICROFONE MUTADO (bloqueio de auto-captura de eco)
+[Edge-TTS] Gerando áudio neural: "Abrindo o Spotify para você agora!" (pt-BR-AntonioNeural)
+[acoes.py] os.startfile("C:\\\\Users\\\\...\\\\Spotify.exe") -> Processo disparado com sucesso.
+[voz.py] voz.falando.clear() -> MICROFONE DESMUTADO e pronto para novos comandos.`,
+        stt: 'Google STT (PT-BR)',
+        tts: 'Edge TTS (Antonio)',
+        lock: 'BLOQUEADO (ANTI-ECO)',
+        trigger: 'Voz do Usuário'
+      },
+      palmas: {
+        status: 'GATILHO POR PALMAS DETECTADO',
+        audioStat: 'Picos duplos de amplitude detectados (Δt = 340ms)',
+        logBadge: 'ESTADO: PAUSA TEMPORÁRIA',
+        log: `[palmas.py] Stream sounddevice ativo em background daemon.
+[palmas.py] Pico 1: Amplitude 0.82 > limiar 0.65 (janela 400ms iniciada).
+[palmas.py] Pico 2: Amplitude 0.88 detectado em 340ms. Confirmação: DUAS PALMAS!
+[main.py] Callback disparado: Jarvis.alternar_pausa()
+[sistema] Assistente pausado. Microfone desativado temporariamente.
+[gui/interface.py] HUD atualizado: STATUS = 'PAUSADO'. Bate palmas novamente para retomar.`,
+        stt: 'SoundDevice / NumPy',
+        tts: 'Silenciado (Modo Pausa)',
+        lock: 'PAUSA FORÇADA',
+        trigger: 'Detector de Palmas'
+      },
+      pesquisa: {
+        status: 'BUSCA WEB & RESPOSTA DE VOZ',
+        audioStat: 'Voz contínua · Frase: 1.8s · STT OK',
+        logBadge: 'VOZ.FALANDO: SÍNTESE ATIVA',
+        log: `[ouvido.py] Transcrição: "pesquisar cotação do dólar hoje"
+[cerebro.py] Intenção mapeada: PESQUISA_WEB -> Query: "cotação do dólar hoje"
+[acoes.py] webbrowser.open_new_tab("https://www.google.com/search?q=cotação+do+dólar+hoje")
+[voz.py] Trava anti-eco ativada.
+[Edge-TTS] "Pesquisando cotação do dólar no seu navegador."
+[sistema] Aba do navegador aberta com sucesso. Canal de escuta reaberto.`,
+        stt: 'Google STT (PT-BR)',
+        tts: 'Edge TTS (Antonio)',
+        lock: 'BLOQUEADO (ANTI-ECO)',
+        trigger: 'Comando de Voz'
+      },
+      manual: {
+        status: 'FALLBACK DE ENTRADA MANUAL',
+        audioStat: 'Entrada via teclado Tkinter (sem áudio mic)',
+        logBadge: 'MIC: LIBERADO',
+        log: `[gui/interface.py] Usuário digitou no campo manual: "que horas são" + Enter.
+[main.py] Thread separada disparada via processar_texto_manual().
+[cerebro.py] Intenção detectada: CONSULTAR_HORAS -> time.strftime("%H:%M")
+[voz.py] Resposta gerada: "Agora são exatamente 21 horas e 45 minutos."
+[gui/interface.py] Log de resposta impresso no terminal HUD arc-reactor.`,
+        stt: 'Teclado (Fallback Manual)',
+        tts: 'Edge TTS (Antonio)',
+        lock: 'LIBERADO (SEM ECO)',
+        trigger: 'Entrada Manual'
+      }
+    };
+
+    function updateJarvisScenario(scenarioKey) {
+      const data = jarvisScenarios[scenarioKey];
+      if (!data) return;
+      explorer.querySelector('#jarvis-hud-status').textContent = data.status;
+      explorer.querySelector('#jarvis-audio-stat').textContent = data.audioStat;
+      explorer.querySelector('#jarvis-log-badge').textContent = data.logBadge;
+      explorer.querySelector('#jarvis-hud-log code').textContent = data.log;
+      explorer.querySelector('#jarvis-tele-stt').textContent = data.stt;
+      explorer.querySelector('#jarvis-tele-tts').textContent = data.tts;
+      explorer.querySelector('#jarvis-tele-lock').textContent = data.lock;
+      explorer.querySelector('#jarvis-tele-trigger').textContent = data.trigger;
+      sfx.click();
+    }
+
+    explorer.querySelectorAll('.agent-scenario-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        explorer.querySelectorAll('.agent-scenario-btn').forEach(b => b.classList.toggle('active', b === btn));
+        updateJarvisScenario(btn.dataset.jarvis);
+      });
+    });
+
+    updateJarvisScenario('abrir_app');
+    target.append(explorer);
+  }
+
 }
 function renderLegalArchitecture(project) {
   const target = $('#case-architecture');
@@ -995,6 +1159,7 @@ Comandos suportados:<br>
 • <strong style="color:#fbbf24">agents</strong>: Arquitetura multiagente do Home Credit<br>
 • <strong style="color:#fbbf24">exchange</strong>: Stack e endpoints do SENAI Exchange<br>
 • <strong style="color:#fbbf24">legal</strong>: Especificações do agente jurídico e RAG<br>
+• <strong style="color:#fbbf24">jarvis</strong>: Assistente pessoal de voz com HUD arc-reactor<br>
 • <strong style="color:#fbbf24">whoami</strong>: Perfil e foco profissional de Arthur Faria e Silva<br>
 • <strong style="color:#fbbf24">contact</strong>: Links diretos e canais de contato<br>
 • <strong style="color:#fbbf24">clear</strong>: Limpa a janela do terminal
@@ -1010,8 +1175,9 @@ PID   AGENT / PROCESSO        CPU%   MEM%    LATÊNCIA   STATUS
 1046  spec-contracts (Schema)  1.1   52 MB    290 ms    IDLE
 2090  yolo-pet-infer (ONNX)    8.7  180 MB   22.8 ms    ACTIVE (30fps)
 3010  pgvector-hnsw (Postgres) 0.6   96 MB    4.2 ms    READY
+4012  jarvis-hud (Tkinter)     1.8   58 MB    16.0 ms   LISTENING
 </div>
-<span style="color:#10b981">✓ 7 processos ativos. Sistema operando em estado nominal (0 falhas).</span>
+<span style="color:#10b981">✓ 8 processos ativos. Sistema operando em estado nominal (0 falhas).</span>
     `,
     cv: () => `
 <pre style="color:#fbbf24;font-family:var(--mono);font-size:0.72rem;line-height:1.45;margin:0">
@@ -1125,7 +1291,8 @@ traceroute to southamerica-east1.gcp.internal (10.128.0.1), 30 hops max:
 • <strong>Home Credit (Multiagentes):</strong> Orquestrador Concierge + 4 especialistas, validação com <span style="color:#34d399">+30 testes</span> e schemas JSON via Pydantic.<br>
 • <strong>Inspeção PET (TCC Mecatrônica):</strong> Modelo YOLO treinado com <span style="color:#34d399">+200 imagens</span>, integração com CLP Omron e <span style="color:#34d399">+50 testes</span> no código Python.<br>
 • <strong>SENAI Exchange (Back-end ADS):</strong> Modelagem relacional PostgreSQL, Spring Boot MVC, Spring Data JPA/Hibernate e Docker.<br>
-• <strong>Agente Jurídico (2RP Net):</strong> Integração Projuris, RAG com PostgreSQL e pgvector, geração DOCX e revisão humana obrigatória.
+• <strong>Agente Jurídico (2RP Net):</strong> Integração Projuris, RAG com PostgreSQL e pgvector, geração DOCX e revisão humana obrigatória.<br>
+• <strong>J.A.R.V.I.S (Voz &amp; Automação):</strong> Pipeline STT/TTS com Microsoft Edge Neural TTS, HUD Tkinter reativo, detector de palmas (SoundDevice) e trava anti-eco multi-thread.
     `,
     whoami: () => `
 <strong style="color:#fbbf24">Arthur Faria e Silva</strong> (18 anos · Sorocaba – SP)<br>
@@ -1144,10 +1311,11 @@ Foco: Soluções práticas unindo agentes de IA, RAG, APIs REST, Python, dados e
     projects: () => `
 <strong style="color:#fbbf24">PROJETOS EM DESTAQUE NO PORTFÓLIO:</strong><br>
 1. <strong>agents:</strong> Home Credit · Multiagentes com Google ADK, 4 especialistas, Pydantic e +30 testes.<br>
-2. <strong>pet:</strong> IA para Inspeção de Garrafas PET (TCC Mecatrônica) · YOLO, Roboflow, CLP Omron, +200 imagens e +50 testes.<br>
+2. <strong>pet:</strong> Visão Computacional para Inspeção de Garrafas PET (TCC Mecatrônica) · YOLO, Roboflow, CLP Omron, +200 imagens e +50 testes.<br>
 3. <strong>exchange:</strong> SENAI Exchange · Modelagem PostgreSQL, Spring Boot MVC, REST APIs e Docker.<br>
 4. <strong>legal:</strong> Agente Jurídico (2RP Net) · Projuris, RAG híbrido com pgvector e geração de minutas DOCX.<br>
-<span style="color:#8f98a8">Dica: Digite o nome de qualquer projeto (ex: <span style="color:#fbbf24">pet</span>, <span style="color:#fbbf24">agents</span>, <span style="color:#fbbf24">meca</span>) para ver os detalhes técnicos.</span>
+5. <strong>jarvis:</strong> J.A.R.V.I.S · Assistente de voz em Python com Edge TTS, HUD Tkinter e automação.<br>
+<span style="color:#8f98a8">Dica: Digite o nome de qualquer projeto (ex: <span style="color:#fbbf24">pet</span>, <span style="color:#fbbf24">agents</span>, <span style="color:#fbbf24">jarvis</span>) para ver os detalhes técnicos.</span>
     `,
     projetos: () => commands.projects(),
     pet: () => `
@@ -1161,7 +1329,7 @@ Foco: Soluções práticas unindo agentes de IA, RAG, APIs REST, Python, dados e
     meca: () => `
 <strong style="color:#fbbf24">TÉCNICO EM MECATRÔNICA · SENAI SOROCABA:</strong><br>
 • Período: jan/2024 – dez/2025 (Concluído)<br>
-• Trabalho de Conclusão de Curso (TCC): IA para inspeção de garrafas PET em esteira automatizada.<br>
+• Trabalho de Conclusão de Curso (TCC): Visão Computacional para inspeção de garrafas PET em esteira automatizada.<br>
 • Competências: Visão computacional (YOLO, Roboflow), automação industrial, comandos elétricos, CLP Omron, sensores e atuadores.
     `,
     mecatronica: () => commands.meca(),
@@ -1188,6 +1356,17 @@ Foco: Soluções práticas unindo agentes de IA, RAG, APIs REST, Python, dados e
 • <strong>Testes &amp; Qualidade:</strong> Implementação de testes e avaliação contínua da qualidade dos documentos processados.<br>
 • <strong>Governança:</strong> Human-in-the-Loop obrigatório (revisão jurídica humana antes de qualquer decisão).
     `,
+    jarvis: () => `
+<strong style="color:#fbbf24">J.A.R.V.I.S · ASSISTENTE PESSOAL DE VOZ EM PYTHON:</strong><br>
+• <strong>Síntese de Voz Neural:</strong> Microsoft Edge TTS (<code style="color:#38bdf8">pt-BR-AntonioNeural</code>) com pipeline assíncrono e cache temporário.<br>
+• <strong>Reconhecimento de Fala (STT):</strong> SpeechRecognition com microfone padrão e fallback para digitação manual no terminal.<br>
+• <strong>Sincronização &amp; Anti-Eco:</strong> Evento de thread <code style="color:#38bdf8">voz.falando</code> que suspende a escuta durante a reprodução, eliminando retroalimentação acústica.<br>
+• <strong>Detecção de Palmas:</strong> Escuta contínua com SoundDevice + NumPy identificando duplo pico sonoro com threshold calibrado.<br>
+• <strong>Interface Visual (HUD):</strong> Janela Tkinter sem bordas, no topo da tela (always-on-top), com animação de reator arc e log de status.<br>
+• <strong>Automação &amp; Utilitários:</strong> PyAutoGUI para controle do OS, pesquisa no Google/YouTube e previsão meteorológica (Open-Meteo).
+    `,
+    assistente: () => commands.jarvis(),
+    voz: () => commands.jarvis(),
     matrix: () => commands.theme(),
     clear: () => null
   };
@@ -1356,6 +1535,15 @@ function initCommandPalette() {
       run: () => openProjectModal('legal')
     },
     {
+      group: 'PROJETOS SELECIONADOS',
+      id: 'proj_jarvis',
+      title: 'J.A.R.V.I.S · Assistente de Voz',
+      desc: 'Assistente pessoal em Python com Edge TTS, HUD Tkinter e automação',
+      badge: 'Voz & IA',
+      keywords: 'jarvis assistente voz edge tts stt speech reconhecimento audio tkinter automacao python palmas sounddevice',
+      run: () => openProjectModal('jarvis')
+    },
+    {
       group: 'NAVEGAÇÃO RÁPIDA',
       id: 'nav_projetos',
       title: 'Projetos Selecionados',
@@ -1423,7 +1611,7 @@ function initCommandPalette() {
       group: 'FILTROS DE PROJETOS',
       id: 'filter_all',
       title: 'Filtrar: Todos os Projetos',
-      desc: 'Exibir todos os 3 projetos selecionados',
+      desc: 'Exibir todos os 4 projetos selecionados',
       badge: 'Filtro',
       keywords: 'filtro todos all',
       run: () => {
