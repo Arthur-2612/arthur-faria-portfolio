@@ -1218,6 +1218,10 @@ Formação técnica em Mecatrônica com experiência em visão computacional e a
 • DevOps &amp; Cloud: Git, GitHub, Docker, Docker Compose, Kubernetes, Google Cloud (GCP)
 ================================================================================
 </pre>
+<div style="margin:10px 0 6px 0;display:flex;gap:10px;flex-wrap:wrap">
+  <a href="./assets/curriculo-arthur-faria.pdf" download="Curriculo-Arthur-Faria-e-Silva.pdf" class="terminal-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;background:#f59e0b;color:#000;font-weight:700">📥 Baixar PDF Oficial (A4)</a>
+  <a href="./assets/curriculo-arthur-faria.pdf" target="_blank" rel="noopener noreferrer" class="terminal-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px">↗ Abrir no Navegador</a>
+</div>
 <span style="color:#8f98a8">Dica: Você também pode abrir a ficha executiva com o comando <strong style="color:#fbbf24">recruiter</strong> ou pressionando o botão <strong style="color:#fbbf24">⚡ Modo Recrutador (⌘R)</strong>.</span>
     `,
     resume: () => commands.cv(),
@@ -1826,6 +1830,35 @@ function initCommandPalette() {
         const copyBtn = document.getElementById('copy-profile');
         if (copyBtn) copyBtn.click();
       }
+    },
+    {
+      group: 'CURRÍCULO & DOWNLOAD',
+      id: 'cmd_download_cv',
+      title: 'Baixar Currículo Oficial (PDF 1 Página)',
+      desc: 'Download do PDF vetorial de Arthur Faria e Silva (A4)',
+      badge: 'PDF',
+      keywords: 'curriculo cv download pdf baixar ficha arthur faria a4',
+      run: () => {
+        const link = document.createElement('a');
+        link.href = './assets/curriculo-arthur-faria.pdf';
+        link.download = 'Curriculo-Arthur-Faria-e-Silva.pdf';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        if (typeof sfx !== 'undefined' && sfx.success) sfx.success();
+      }
+    },
+    {
+      group: 'CURRÍCULO & DOWNLOAD',
+      id: 'cmd_nav_cv',
+      title: 'Ir para a seção de Currículo',
+      desc: 'Rolar até o painel de prévia e download do currículo oficial',
+      badge: 'Seção',
+      keywords: 'curriculo cv secao preview download a4 pdf visualizacao',
+      run: () => {
+        const el = document.getElementById('curriculo');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   ];
 
@@ -2120,3 +2153,25 @@ function initRecruiterDrawer() {
   window.openRecruiterDrawer = openDrawer;
 }
 initRecruiterDrawer();
+
+function initResumeSection() {
+  const emailBtn = document.getElementById('resume-copy-email-btn');
+  if (!emailBtn) return;
+  emailBtn.addEventListener('click', async () => {
+    const email = emailBtn.getAttribute('data-email') || 'afaria2612@gmail.com';
+    try {
+      await navigator.clipboard.writeText(email);
+      const original = emailBtn.textContent;
+      emailBtn.textContent = 'E-mail Copiado! ✓';
+      emailBtn.style.color = '#10b981';
+      if (typeof sfx !== 'undefined' && sfx.success) sfx.success();
+      setTimeout(() => {
+        emailBtn.textContent = original;
+        emailBtn.style.color = '';
+      }, 2500);
+    } catch {
+      window.location.href = `mailto:${email}`;
+    }
+  });
+}
+initResumeSection();
